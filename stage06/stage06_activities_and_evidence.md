@@ -2,53 +2,75 @@
 
 Complete this one group record. Link actual issues, diffs, tests and reviews; avoid copying entire histories. Blank fields are intentional. Duplicate rows as needed. Use synthetic data only. Every member records their own meaningful contribution. Do not invent results, reviews or Copilot use.
 
-- Group/tutorial: [response]
-- Members, GitHub usernames and cohorts: [response]
-- Repository URL: [response]
+- Group/tutorial: Group 2 | Mon 2:30
+- Members, GitHub usernames and cohorts: 
+  - Cassandra Navarro | Username: Kyedeki
+  - Reema Majed M | Username: reema-aboset
+- Repository URL: (https://github.com/Kyedeki/st1-assignment-3)
 - Starting SHA: [response]
 
 ## A Requirement to issue activities
 
 ### FR-02 Patient Search
 
-- Title: [response]
-- Context: [response]
-- Requirement: [response]
-- Acceptance criteria: [response]
-- Scope: [response]
-- Definition of Done: [response]
-- Owner: [response]
-- Actual issue link: [response]
+- Title: Patient Search by ID
+- Context: SmartCare needs to retrieve existing patients using patient IDs
+- Requirement: System should allow patient to be found by using the IDs
+- Acceptance criteria: 
+  - A valid and existing patient ID
+  - Patient IDs are case sensitive 
+  - Blank and non-string IDs raise "ValueError"
+  - Leading and trailing whitespace is removed from the ID
+- Scope: Implementing PatientService.find_patient and add unit tests for a succesful lookup, invalid IDs, unknown IDs, and case sensitivity  
+- Definition of Done: The criteria is met, tests are passed and feedback from other team members
+- Owner: Cassandra Navarro | Kyedeki 
+- Actual issue link: https://github.com/Kyedeki/st1-assignment-3/issues/1 
 
 ### FR-06 Appointment Cancellation with FR-07 retained history
 
-- Title: [response]
-- Context: [response]
-- Requirement: [response]
-- Acceptance criteria: [response]
-- Scope: [response]
-- Definition of Done: [response]
-- Owner: [response]
-- Actual issue link: [response]
+- Title: Implementing Appointment Cancellation and Retained History
+- Context: SmartCare needs to cancel schedule appointments while preserving appointment records for history and tracking
+- Requirement: Implementing AppointmentService.cancel_appointment so that it cancels an eligible appointment without deleting it from the data store
+- Acceptance criteria:
+  - cancel a scheduled appointment change and change the status to cancelled 
+  - the appointment remains in the data store after cancellation 
+  - blank or non-string appointment ID raise ValueError 
+  - A valid but unknown appointment ID raises LookupError 
+  - cancelling an appointment that is already canceled raises ValueError
+a rejected cancellation will not change a appointments existing status
+- Scope: implement appointment cancellation in the service layer and have relevant tests, do not make unrelated changes
+- Definition of Done: 
+  - criteria is met 
+  - met the relevant test 
+  - got feedback from other groupmates and any changes have been done
+- Owner: Cassandra Navarro | Kyedeki
+- Actual issue link: https://github.com/Kyedeki/st1-assignment-3/issues/2
 
 ## B Commit quality
 
-| Original example | Strong or Weak | Reason |
-|---|---|---|
-| changes | [select] | [response] |
-| final version | [select] | [response] |
-| Add patient search by ID | [select] | [response] |
-| fix stuff | [select] | [response] |
-| Prevent cancellation of completed appointments | [select] | [response] |
+| Original example | Strong or Weak | Reason                                                                                         |
+|---|---------------|------------------------------------------------------------------------------------------------|
+| changes | Weak          | The comments is too general so the groupmates shoould inspect the code to understand the change |
+| final version | Weak          | Does not explain what was added or fixed                                                       |
+| Add patient search by ID | Strong        | The developer added a feature and it clearly identifies the feature that was added             |
+| fix stuff | Weak          | The message does not tell what was fixed                                                       |
+| Prevent cancellation of completed appointments | Strong        | It describes a specific behaviour and shows the the change                                     |
 
 ## C Over scoped PR review
 
 A cancellation PR also renames unrelated patient fields, restructures unrelated code and adds a new dependency.
 
-- Scope concerns: [response]
-- Responsibility and architecture concerns: [response]
-- Testing and review concerns: [response]
-- Changes to remove or separate, with reasons: [response]
+- Scope concerns: 
+  - Unrelated changes with appointment cancellation has been included in the pull request. The PR makes it harder to review and has increased risk of defects in the functionality 
+- Responsibility and architecture concerns: 
+  - renaming the unrelated patient fields and constructing the unrelated code can affect on other parts of SmartCare. The changes should be justified by the requirements than just combining with the appointment cancellaton
+- Testing and review concerns:
+  - the reviewer should check functionality that includes the cancellation as well as the unrelated patient-field changes, restructing the code and the new dependency. Additional tests can be done to double confirm about the functionality if it still works. 
+- Changes to remove or separate, with reasons: 
+  -  separating the patient-field renaming another PR linked to its own requirement
+  - separate the unrelated code and it should be reviewed first and should be tested
+  - remove the unncessary dependency. If the new dependency is required it should be documented like its purpose and should be assessed in terms of security and maintenance implications 
+  - The cancellation should be PR focused on cancelling eligble appointments, and it should retain the appointment history and a test should be done to test the behaviur
 
 ## D Challenge a weak Copilot review
 
