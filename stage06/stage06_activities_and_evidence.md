@@ -183,13 +183,18 @@ Repeat for each significant interaction.
 
 ### Cassandra Navarro — Kyedeki
 
-- Implementation: [ACTUAL IMPLEMENTATION AND EVIDENCE]
-- Testing: [ACTUAL TESTS AND LINKS]
-- Review: [ACTUAL REVIEW OF REEMA'S PR]
-- Issue refinement: Prepared requirement descriptions and acceptance criteria for Issues #1 and #2.
-- Design and responsibility discussion: [ACTUAL DISCUSSIONS]
-- Debugging or integration: [ACTUAL WORK AND EVIDENCE]
-- Documentation or team support: Drafted Sections A–C of the Stage 6 activities and evidence record.
+- **Implementation:** Prepared the implementation scope and functional requirements for Patient Search (FR-02), Appointment Cancellation (FR-06) and Retained History (FR-07).
+- **Testing:** Defined expected validation behaviour and testing requirements for patient lookup, appointment cancellation, invalid identifiers and retained appointment history.
+- **Review:** Analysed an over-scoped pull request in Section C, identifying unrelated modifications, architectural concerns and testing risks. Requested reviewer for documentation PR #3; approval remains pending.
+- **Issue refinement:** Prepared GitHub Issues #1 and #2 with requirement descriptions, acceptance criteria, scope and Definition of Done.
+- **Design and responsibility discussion:** Documented the expected service behaviour, including input validation, exception handling and retention of cancelled appointments.
+- **Debugging or integration:** No individual debugging or integration activity recorded yet.
+- **Documentation or team support:** Completed Sections A–C of the Stage 6 activities and evidence record.
+
+**Evidence:**
+- https://github.com/Kyedeki/st1-assignment-3/issues/1
+- https://github.com/Kyedeki/st1-assignment-3/issues/2
+- https://github.com/Kyedeki/st1-assignment-3/pull/3 
 
 ### Reema Majed M — reema-aboset
 
