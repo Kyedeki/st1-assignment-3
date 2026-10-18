@@ -74,153 +74,192 @@ A cancellation PR also renames unrelated patient fields, restructures unrelated 
 
 ## D Challenge a weak Copilot review
 
+
 GitHub Copilot says: "Looks good; tests pass."
 
-- Missing evidence: [response]
-- Follow-up review question 1: [response]
-- Follow-up review question 2: [response]
-- Follow-up review question 3: [response]
-- Follow-up review question 4: [response]
-- Follow-up review question 5: [response]
-- Additional questions if useful: [response]
+- Missing evidence: The response does not identify which requirements were checked, which tests were executed, whether the assertions verify the expected behaviour, or whether the changes follow the existing SmartCare architecture. Passing tests alone does not prove the implementation is correct.
+
+- Follow-up review question 1: Does PatientService.find_patient return the correct registered patient when a valid existing ID is provided?
+
+- Follow-up review question 2: How does the implementation handle blank, non-string, case-sensitive and unknown patient identifiers?
+
+- Follow-up review question 3: Does AppointmentService.cancel_appointment change an eligible appointment's status to CANCELLED while retaining its record in the data store?
+
+- Follow-up review question 4: Are invalid or repeated cancellation attempts rejected using the exceptions specified in the service contract without changing existing appointment state?
+
+- Follow-up review question 5: Are the changes limited to the relevant service methods and tests, without unrelated refactoring, new dependencies or weakened test assertions?
+
+- Additional questions if useful: Which specific assertions prove each acceptance criterion? Were the full supplied and newly added tests run? Are practitioner lookup and other previously working behaviours preserved?
 
 ## E Team workflow agreement
 
 | Practice | Team agreement |
 |---|---|
-| Branch naming | [response] |
-| Commit message convention | [response] |
-| PR size | [response] |
-| Another-member review requirement | [response] |
-| Merge rule | [response] |
-| Significant Copilot disclosure rule | [response] |
+| Branch naming | Use descriptive feature branches, such as feature/patient-lookup and feature/appointment-cancellation. |
+| Commit message convention | Write short, meaningful messages describing the actual change, such as "Add patient lookup validation tests". |
+| PR size | Each pull request should address one focused requirement or closely related behaviour. Unrelated changes must be separated. |
+| Another-member review requirement | Cassandra and Reema will review each other's actual code changes and test assertions before approving a pull request. |
+| Merge rule | Merge only after the linked acceptance criteria are met, tests have been run, human review is completed, feedback is resolved and the reviewer has approved. |
+| Significant Copilot disclosure rule | Record significant Copilot assistance, including its purpose, suggestions, human evaluation and decisions. Copilot does not replace human review. |
+
+Note: This is the proposed team agreement and must be confirmed by both members.
 
 ## F Issue and backlog index
 
-Create at least two focused issues. Add a linked practitioner-lookup issue or an explicit supporting criterion with the tutor if needed to cover all three service targets.
-
 | Issue link | Requirement | Owner | Acceptance criteria or precise link | Status |
 |---|---|---|---|---|
-| [issue 1] | [response] | [response] | [response] | [response] |
-| [issue 2] | [response] | [response] | [response] | [response] |
+| https://github.com/Kyedeki/st1-assignment-3/issues/1 | FR-02 Patient Search | Cassandra Navarro (Kyedeki) | Existing patient lookup, case-sensitive IDs, input validation and whitespace handling; see Issue #1. | [TO VERIFY ON GITHUB] |
+| https://github.com/Kyedeki/st1-assignment-3/issues/2 | FR-06 Cancellation / FR-07 Retained History | Cassandra Navarro (Kyedeki) | Cancellation changes status, retains history, rejects invalid or unknown IDs and repeated cancellation; see Issue #2. | [TO VERIFY ON GITHUB] |
+| [TO ADD ISSUE LINK OR TUTOR-AGREED CRITERION] | Practitioner lookup service target | [AGREE OWNER] | Exact supporting service contract and acceptance criteria from the Stage 6 handout. | [TO COMPLETE] |
 
 ## G Pull request evidence
 
-Repeat this block per PR. Record actual events, not planned approvals.
+Complete this block separately for each real pull request.
 
-- PR link and title: [response]
-- Linked issue and requirement: [response]
-- Feature branch: [response]
-- Changed behaviour: [response]
-- Meaningful commits: [links]
-- Test command, directory and observed result: [response]
-- Another-member reviewer: [response]
-- Human observations recorded before Copilot: [link and time]
-- Requirement, responsibilities, test assertions and unrelated-scope checks: [response]
-- Key feedback: [response]
-- Author response/change and verification: [response]
-- Reviewer recheck and approval: [link]
-- Merge outcome and SHA: [response]
-- Significant Copilot assistance: [summary or none]
-- Linked issue closure: [response]
-- Each member updated main: [member and confirmation]
-- Integrated verification after merge: [command, directory, result and code SHA]
+### Pull request 1 — Patient Search
+
+- PR link and title: [TO COMPLETE]
+- Linked issue and requirement: Issue #1 — FR-02 Patient Search
+- Feature branch: [ACTUAL BRANCH]
+- Changed behaviour: [DESCRIBE VERIFIED CODE CHANGES]
+- Meaningful commits: [ACTUAL COMMIT LINKS]
+- Test command, directory and observed result: [ACTUAL RESULTS]
+- Another-member reviewer: [ACTUAL REVIEWER]
+- Human observations recorded before Copilot: [ACTUAL REVIEW LINK AND TIME]
+- Requirement, responsibilities, test assertions and unrelated-scope checks: [ACTUAL FINDINGS]
+- Key feedback: [ACTUAL FEEDBACK]
+- Author response/change and verification: [ACTUAL CHANGES AND RESULTS]
+- Reviewer recheck and approval: [ACTUAL REVIEW LINK]
+- Merge outcome and SHA: [ACTUAL MERGE DETAILS]
+- Significant Copilot assistance: [ACTUAL USE OR NONE]
+- Linked issue closure: [VERIFY]
+- Each member updated main: [ACTUAL CONFIRMATIONS]
+- Integrated verification after merge: [COMMAND, WORKING DIRECTORY, RESULT AND SHA]
+
+### Pull request 2 — Appointment Cancellation
+
+- PR link and title: [TO COMPLETE]
+- Linked issue and requirement: Issue #2 — FR-06 / FR-07
+- Feature branch: [ACTUAL BRANCH]
+- Changed behaviour: [DESCRIBE VERIFIED CODE CHANGES]
+- Meaningful commits: [ACTUAL COMMIT LINKS]
+- Test command, directory and observed result: [ACTUAL RESULTS]
+- Another-member reviewer: [ACTUAL REVIEWER]
+- Human observations recorded before Copilot: [ACTUAL REVIEW LINK AND TIME]
+- Requirement, responsibilities, test assertions and unrelated-scope checks: [ACTUAL FINDINGS]
+- Key feedback: [ACTUAL FEEDBACK]
+- Author response/change and verification: [ACTUAL CHANGES AND RESULTS]
+- Reviewer recheck and approval: [ACTUAL REVIEW LINK]
+- Merge outcome and SHA: [ACTUAL MERGE DETAILS]
+- Significant Copilot assistance: [ACTUAL USE OR NONE]
+- Linked issue closure: [VERIFY]
+- Each member updated main: [ACTUAL CONFIRMATIONS]
+- Integrated verification after merge: [COMMAND, WORKING DIRECTORY, RESULT AND SHA]
 
 ## H Copilot collaboration record
 
-Record meaningful required use, not every trivial completion. Repeat per significant interaction.
+- Member and task: [ACTUAL MEMBER AND TASK]
+- Prompt/purpose and relevant issue/diff: [ACTUAL PROMPT OR LINK]
+- Summary of output: [ACTUAL COPILOT SUGGESTIONS]
+- Human check against actual code, requirements and tests: [VERIFIED OBSERVATIONS]
+- Decision — Accept / Modify / Reject: [ACTUAL DECISION]
+- Reason: [EVIDENCE-BASED REASON]
+- Verification/evidence: [ACTUAL LINK AND RESULT]
 
-- Member and task: [response]
-- Prompt/purpose and relevant issue/diff: [response]
-- Summary of output: [response]
-- Human check against actual code, requirements and tests: [response]
-- Decision — Accept / Modify / Reject: [select]
-- Reason: [response]
-- Verification/evidence: [link and result]
+Repeat for each significant interaction.
 
 ## I Human versus Copilot review comparison
 
-- Human reviewer noticed before consulting Copilot: [response]
-- Copilot noticed: [response]
-- Overlap: [response]
-- What did the human reviewer notice that Copilot did not: [response]
-- What did Copilot identify that the human reviewer initially missed: [response]
-- Unsupported or incorrect Copilot suggestion: [response or none identified with explanation]
-- Human judgement accepted, modified or rejected, and why: [response]
-- Which evidence justified merge approval: [response]
+- Human reviewer noticed before consulting Copilot: [ACTUAL HUMAN-FIRST OBSERVATIONS]
+- Copilot noticed: [ACTUAL COPILOT OBSERVATIONS]
+- Overlap: [FINDINGS BOTH IDENTIFIED]
+- What did the human reviewer notice that Copilot did not: [ACTUAL DIFFERENCE]
+- What did Copilot identify that the human reviewer initially missed: [ACTUAL DIFFERENCE]
+- Unsupported or incorrect Copilot suggestion: [ACTUAL EXAMPLE OR EXPLAIN NONE IDENTIFIED]
+- Human judgement accepted, modified or rejected, and why: [ACTUAL DECISION AND REASON]
+- Which evidence justified merge approval: [TEST RESULTS, REVIEW AND REQUIREMENT TRACE]
 
 ## J Contributions
 
-Repeat per member. Include only categories that describe actual work; write not applicable where appropriate. Pairing or mentoring can be supported by a short corroborated note.
+### Cassandra Navarro — Kyedeki
 
-- Member: [response]
-- Implementation: [work and evidence]
-- Testing: [work and evidence]
-- Review: [work and evidence]
-- Issue refinement: [work and evidence]
-- Design and responsibility discussion: [work and evidence]
-- Debugging or integration: [work and evidence]
-- Documentation or team support: [work and evidence]
+- Implementation: [ACTUAL IMPLEMENTATION AND EVIDENCE]
+- Testing: [ACTUAL TESTS AND LINKS]
+- Review: [ACTUAL REVIEW OF REEMA'S PR]
+- Issue refinement: Prepared requirement descriptions and acceptance criteria for Issues #1 and #2.
+- Design and responsibility discussion: [ACTUAL DISCUSSIONS]
+- Debugging or integration: [ACTUAL WORK AND EVIDENCE]
+- Documentation or team support: Drafted Sections A–C of the Stage 6 activities and evidence record.
+
+### Reema Majed M — reema-aboset
+
+- Implementation: [ACTUAL IMPLEMENTATION AND EVIDENCE]
+- Testing: [ACTUAL TESTS AND LINKS]
+- Review: [ACTUAL REVIEW OF CASSANDRA'S PR]
+- Issue refinement: [ACTUAL CONTRIBUTION]
+- Design and responsibility discussion: [ACTUAL CONTRIBUTION]
+- Debugging or integration: [ACTUAL WORK AND EVIDENCE]
+- Documentation or team support: Drafted proposed responses for Sections D–F and K–L; final record and GitHub evidence to be verified with the group.
 
 ## K Exit question
 
 Why is a high commit count not necessarily evidence of strong contribution?
 
-[response]
+A high commit count does not automatically represent meaningful contribution because commits vary in size, complexity and importance. One student may make many small formatting changes, while another may resolve a difficult defect, develop meaningful tests or identify a significant design problem during review. Contribution should be evaluated through the quality and relevance of the work, requirement coverage, testing, review feedback, integration and documented decisions rather than the number of commits alone.
 
 ## L Stage 6 formative questions
 
-1. What is version control?
+### 1. What is version control?
 
-[response]
+Version control is a system that records changes to files over time. It allows developers to track modifications, compare versions, restore earlier work and collaborate without losing important changes. Git is the version control system used for SmartCare.
 
-2. Why is a feature branch useful?
+### 2. Why is a feature branch useful?
 
-[response]
+A feature branch allows a developer to work on a specific change without directly modifying the shared main branch. It separates unfinished work from reviewed code and allows changes to be tested and reviewed before integration.
 
-3. What makes a commit a good engineering commit?
+### 3. What makes a commit a good engineering commit?
 
-[response]
+A good engineering commit contains a focused and meaningful change, has a clear description, and avoids unrelated modifications. It should be understandable to another developer and should preserve a useful history of the project's development.
 
-4. What is a pull request?
+### 4. What is a pull request?
 
-[response]
+A pull request is a request to integrate changes from one Git branch into another. It provides a space for teammates to inspect the differences, discuss concerns, review tests and approve changes before merging them into main.
 
-5. What is the purpose of code review?
+### 5. What is the purpose of code review?
 
-[response]
+Code review helps identify defects, incorrect assumptions, weak tests and unnecessary modifications before changes become part of the shared application. It also supports knowledge sharing, maintainability and accountability.
 
-6. What does a Git diff show?
+### 6. What does a Git diff show?
 
-[response]
+A Git diff shows the differences between versions of files, including added, removed and modified lines. It helps developers and reviewers understand exactly what changed and identify unexpected modifications.
 
-7. What is a Definition of Done?
+### 7. What is a Definition of Done?
 
-[response]
+A Definition of Done is a set of conditions that must be satisfied before a task can be considered complete. For SmartCare, this includes meeting the acceptance criteria, running meaningful tests, completing the required review, resolving important feedback and integrating the approved work.
 
-8. What is the appropriate role of GitHub Copilot in pull-request review?
+### 8. What is the appropriate role of GitHub Copilot in pull-request review?
 
-[response]
+GitHub Copilot should assist reviewers by suggesting possible defects, edge cases, missing tests and improvements. Its suggestions must be checked against the actual requirements, code and test results. Human reviewers remain responsible for deciding which suggestions are valid and whether a change should be approved.
 
-9. Why should individual contribution not be judged only by commit count?
+### 9. Why should individual contribution not be judged only by commit count?
 
-[response]
+Commit count does not measure the difficulty, quality or importance of a person's work. Testing, debugging, reviewing pull requests, discussing requirements and resolving integration problems are also meaningful contributions. Evidence of actual engineering work provides a better assessment than the number of commits.
 
-10. What is the Stage 6 engineering rule?
+### 10. What is the Stage 6 engineering rule?
 
-[response]
+Stage 6 requires changes to be traceable, focused, tested and reviewed before they are integrated. Each significant change should link to a requirement, be implemented on a feature branch, include meaningful verification, receive another member's human review and be merged only after the required checks are satisfied.
 
 ## M Completion and handover
 
-- Starting SHA: [response]
-- Final Stage 6 code SHA: [response]
-- Test command: [response]
-- Working directory: [response]
-- Observed result: [response]
-- PR and another-member reviewer: [links]
-- Unresolved issue or none: [response]
-- Stage 7 handover status: [ready for tutor checkpoint / unresolved work]
-- Final submitted SHA if later than tested SHA: [response and evidence-only difference]
+- Starting SHA: [ACTUAL STARTING SHA]
+- Final Stage 6 code SHA: [ACTUAL TESTED SHA]
+- Test command: python -m pytest
+- Working directory: project/
+- Observed result: [ACTUAL PASS/FAIL COUNTS]
+- PR and another-member reviewer: [ACTUAL LINKS AND REVIEWERS]
+- Unresolved issue or none: [ACTUAL STATUS]
+- Stage 7 handover status: [READY FOR TUTOR CHECKPOINT / UNRESOLVED WORK]
+- Final submitted SHA if later than tested SHA: [ACTUAL SHA AND EVIDENCE-ONLY DIFFERENCE]
 
 - [ ] Three Stage 6 service targets completed and checked.
 - [ ] Original supplied tests retained and passing.
@@ -233,4 +272,4 @@ Why is a high commit count not necessarily evidence of strong contribution?
 - [ ] Only synthetic data included; confidential peer material kept out.
 - [ ] Tutor can trace a requirement through issue, code, tests, PR and checkpoint.
 
-Do not write a file's own future commit SHA into that file. Record the tested code SHA first, then commit the evidence; explain the difference when submitting.
+Do not write a file's own future commit SHA into that file. Record the tested code SHA first, then commit the evidence; explain the difference when submitting. 
