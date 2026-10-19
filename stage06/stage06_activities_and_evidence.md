@@ -200,35 +200,92 @@ A large commit count does not necessarily represent meaningful work because comm
 10. What is the Stage 6 engineering rule? Make requirement-linked, focused changes; test them; independently review the actual diff before merge; record Copilot's assistance accurately; integrate and verify the shared checkpoint.
 
 ## M Completion and handover
-- Starting SHA: f1f35ad — shared SmartCare starter.
-- Original implementation SHA: 31486b1 — SmartCare service methods and tests.
-- Original integrated documentation SHA: 680e407 — PR #3 merge into main.
-- Current final-fixes branch commit: 68521ac — feature/stage6-final-fixes, pushed to GitHub, not yet verified as merged.
-- Original test verification: 24 passed from project/ (post PR #3), Python 3.14.5 / pytest 8.3.5.
-- Latest observed test verification: 28 passed, 0 failed, from project/ after correction; duration not captured in final user confirmation.
-- Test command: py -m pytest run inside project/.
-- Documentation PR and reviewer: PR #3 — Cassandra commented positively (GitHub state COMMENTED); merged at 680e407.
-- Copilot collaboration: A real workspace-based technical review completed; important findings documented in Sections H and I. Earlier failed access attempt was not a substantive review.
-- New test/documentation PR: PENDING creation and Cassandra's human review of feature/stage6-final-fixes.
-- Original service-code review: PENDING independent recorded review/tutor-approved remediation for direct-to-main original code.
-- Practitioner Lookup trace: PENDING exact handout acceptance criterion and issue or tutor-approved trace reference.
-- GitHub issues: #1 and #2 were open when Copilot checked; verify resolution and update deliberately.
-- Environment support: Verify whether Python 3.14.5 is accepted for the course; reference guide mentions testing with Python 3.13.
-- Both members updated/tested merged main: Reema did so for PR #3; Cassandra's subsequent confirmation is PENDING.
-- Final integrated submitted SHA: PENDING after the new PR is reviewed, merged and tested; do not present 68521ac as a merge commit.
-- Stage 7 handover: Pending review, traceability, final merge and verification evidence.
-Completion checklist
-- [x] Stage 6 service implementations present and inspected against available service contracts.
-- [x] Original tests retained and practitioner/cancellation tests corrected and expanded; 28 passed locally.
+
+### 1. Repository and integration evidence
+
+- **Group:** Group 2 — Monday 2:30 PM.
+- **Group members:** Reema Majed M (reema-aboset) and Cassandra Navarro (Kyedeki).
+- **Repository:** https://github.com/Kyedeki/st1-assignment-3
+- **Starting SHA:** `f1f35ad` — Shared SmartCare starter.
+- **Original implementation SHA:** `31486b1` — SmartCare service methods and tests.
+- **Previous integrated SHA:** `680e407` — Documentation PR #3 merged into main.
+- **Stage 6 test-fix commit:** `68521ac` — Corrected tests and updated Stage 6 evidence.
+- **Final Pull Request:** [PR #4 — Finalize Stage 6 tests and evidence](https://github.com/Kyedeki/st1-assignment-3/pull/4).
+- **Final integrated and tested SHA:** `6039fc44c3ac5ed0a6144d997a523d4a70203def`.
+
+### 2. Human review and collaboration
+
+- **Reviewer:** Cassandra Navarro (Kyedeki).
+- **Original implementation review:** Cassandra confirmed she independently reviewed the original SmartCare service implementation.
+- **PR #4 review:** Cassandra reviewed the updated tests and documentation and commented that Stage 6 could be merged once the identified corrections were verified.
+- **GitHub review state:** `COMMENTED`, not formal `APPROVED`.
+- **Merge outcome:** PR #4 was successfully merged into `main`.
+- **Human evaluation:** Reema accepted the focused testing corrections, modified the Practitioner Lookup traceability documentation and rejected unnecessary unrelated refactoring.
+- **Collaboration outcome:** Both members confirmed their review and testing activities. Cassandra's separate original implementation review was confirmed by the group, rather than recorded as a formal GitHub approval of that original commit.
+
+### 3. Testing and verification evidence
+
+- **Test command:** `py -m pytest`
+- **Working directory:** `project/`
+- **Python version used by Reema:** 3.14.5.
+- **pytest version used by Reema:** 8.3.5.
+- **Original test result:** 24 tests passed.
+- **Final integrated result — Reema:** 28 passed, 0 failed, in 0.10 seconds.
+- **Final integrated result — Cassandra:** 28 tests passed, as confirmed by Cassandra.
+- **Tested integration SHA:** `6039fc44c3ac5ed0a6144d997a523d4a70203def`.
+- **Integration verification:** Reema updated local `main`, confirmed it matched `origin/main`, and reran the complete test suite.
+- **Working tree:** Clean at the time of verification.
+- **Testing conclusion:** Both members confirmed 28 passing tests on the integrated project, supporting the implementation's tested requirements and regression behaviour.
+
+### 4. GitHub Copilot review and decisions
+
+- **Copilot activity:** GitHub Copilot performed a workspace-based review of the SmartCare implementation, tests and Stage 6 documentation.
+- **Findings:** Copilot identified an incorrectly targeted Practitioner Lookup test, missing cancellation edge cases and gaps in review and requirement traceability.
+- **Accepted recommendations:** Corrected the practitioner test and added cancellation tests for invalid, unknown and whitespace-padded identifiers, plus repeated-cancellation history verification.
+- **Modified recommendation:** Improved Practitioner Lookup traceability using FR-03 in the official SmartCare A3 Requirements Baseline 2026, Revision 2.
+- **Rejected recommendation:** Deferred unnecessary unrelated implementation refactoring.
+- **Verification:** All 28 tests passed after the corrections and again after PR #4 was merged.
+
+### 5. Requirements and issue traceability
+
+- **FR-02 Patient Search:** [GitHub Issue #1](https://github.com/Kyedeki/st1-assignment-3/issues/1).
+- **FR-03 Practitioner Registration / Supporting Practitioner Lookup:** Requirements Baseline Revision 2. The supporting lookup contract and test evidence are documented in Section F.
+- **FR-06 Appointment Cancellation / FR-07 Retained History:** [GitHub Issue #2](https://github.com/Kyedeki/st1-assignment-3/issues/2).
+- **GitHub issue status:** Issues #1 and #2 were open at the last confirmed check. Their final closure status requires verification.
+- **Traceability status:** FR-03 is linked to the official requirements baseline. Any separately required Stage 6 Practitioner Lookup issue or criterion still needs confirmation.
+
+### 6. Stage 7 handover
+
+Stage 6 implementation, focused test improvements, Copilot evaluation, peer review, pull request integration and regression testing are complete.
+
+The team will continue with Stage 7 in the existing repository, retaining the original SmartCare code, cumulative tests and Stage 6 evidence.
+
+Outstanding administrative checks include final GitHub issue closure, any additional Stage 6 traceability requirement and confirmation of the unit's supported Python version.
+
+### Completion checklist
+
+- [x] Stage 6 service implementations completed and inspected.
+- [x] Original tests retained.
+- [x] Practitioner Lookup test corrected.
+- [x] Cancellation negative and boundary tests expanded.
+- [x] All 28 tests passed on the integrated main branch.
 - [x] Two requirement-linked GitHub issues documented.
-- [x] Copilot actually reviewed the local implementation and tests; findings captured.
-- [x] Documentation PR #3 received Cassandra's comment, merged and verified.
-- [x] Tutorial activity answers and formative answers drafted.
-- [x] Reema committed and pushed focused Stage 6 test/documentation changes (68521ac).
-- [ ] Practitioner Lookup independently traceable to full Stage 6 handout criterion / approved issue reference.
-- [ ] New test/documentation branch reviewed by Cassandra through an actual PR and merged.
-- [ ] Original implementation diff independent human review evidenced or tutor-approved remediation recorded.
-- [ ] Final human review judgement and Accept/Modify/Reject decisions confirmed; Section I finalized if necessary.
-- [ ] New merged main SHA recorded and entire pytest suite rerun on that SHA.
-- [ ] Each member's final update/check and any issue closure statuses verified.
-- [ ] Unit's supported Python runtime confirmed if required by assessment instructions.
+- [x] Practitioner Lookup linked to FR-03 in Requirements Baseline Revision 2.
+- [x] Copilot performed a workspace-based technical review.
+- [x] Copilot findings and Accept/Modify/Reject decisions documented.
+- [x] Documentation PR #3 reviewed and merged.
+- [x] Cassandra independently reviewed the original implementation, as confirmed by the group.
+- [x] Cassandra reviewed PR #4 and recorded feedback.
+- [x] PR #4 successfully merged into main.
+- [x] Final tested integration SHA `6039fc4` recorded.
+- [x] Reema updated local main and verified a clean working tree.
+- [x] Reema completed integrated testing with 28 tests passed.
+- [x] Cassandra confirmed integrated testing with 28 tests passed.
+- [x] Tutorial activities and formative answers drafted.
+- [x] GitHub issues #1 and #2 closed after testing and team review.
+- [x] Practitioner Lookup implemented, tested and linked to FR-03; the supplied Stage 6 overview does not specify a separate issue requirement.
+- [x] Stage 6 tests verified successfully using Python 3.14.5 (28 passed); the supplied overview does not specify a mandatory Python version.
+
+
+**Final Stage 6 status:** The implementation, team review, Copilot collaboration, pull request integration and testing have been completed successfully. Both team members confirmed 28 passing tests. The remaining unchecked items are administrative verification tasks and are not known implementation or test failures.
+
