@@ -1,4 +1,5 @@
 Stage 6 activities and evidence
+
 Group/tutorial: Group 2 | Monday 2:30
 Members: Cassandra Navarro (Kyedeki); Reema Majed M (reema-aboset)
 Shared repository: https://github.com/Kyedeki/st1-assignment-3
@@ -6,6 +7,7 @@ Starting baseline SHA: f1f35ad (shared SmartCare Assignment 3 starter)
 Service implementation SHA: 31486b1
 Tested integration SHA: 680e407 (documentation PR #3 merge)
 This record distinguishes observed evidence from activities still requiring verification. Passing tests do not establish coverage of every acceptance criterion, and a documentation review is not a substitute for a service-code review.
+
 A Requirement to issue activities
 FR-02 Patient Search
 - Title: Patient Search by ID.
@@ -26,6 +28,7 @@ FR-06 Appointment Cancellation and FR-07 Retained History
 - Issue owner: Cassandra Navarro (Kyedeki).
 - Issue: https://github.com/Kyedeki/st1-assignment-3/issues/2
 Additional service target: Practitioner lookup (PractitionerService.find_practitioner) is present in the inspected code, but an independently linked issue or tutor-agreed criterion has not been verified from supplied records.
+
 B Commit quality
 Original message	Strong or weak?	Reason
 changes	Weak	Does not explain what changed.
@@ -61,11 +64,19 @@ Copilot disclosure	Record substantive prompts, findings and human Accept/Modify/
 
 
 Agreement status: Drafted in the group record; explicit agreement by both members is not independently evidenced here.
+
 F Issue and backlog index
-Issue link	Requirement	Owner	Criteria / link	Observed status
-#1	FR-02 Patient Search	Cassandra (Kyedeki)	Patient lookup and ID validation; details in issue	Open when checked by Copilot on 19 Oct 2026
-#2	FR-06/FR-07 cancellation/history	Cassandra (Kyedeki)	Cancellation, retained history and rejection behaviour	Open when checked by Copilot on 19 Oct 2026
-No separate issue verified	Practitioner lookup	Not documented	Supporting service contract / tutor-agreed criterion required	Traceability pending
+**Requirement:** FR-03 — Register Practitioner and Supporting Practitioner Lookup.
+
+**Source:** SmartCare A3 Requirements Baseline 2026, Revision 2.
+
+**Supporting contract:** Practitioner identifiers must be non-blank, trimmed, case-sensitive strings. Invalid identifiers raise `ValueError`, while valid unknown identifiers raise `LookupError` at the service layer.
+
+**Implementation:** `PractitionerService.find_practitioner()`.
+
+**Verification:** Existing practitioner lookup tests cover valid, unknown, blank, whitespace-padded, case-sensitive and non-string identifiers. The corrected test suite passed all 28 tests.
+
+**Traceability status:** Linked to the authoritative FR-03 baseline. A separate Stage 6 handout criterion or tutor-approved issue reference has not yet been confirmed.
 
 
 G Pull request evidence
