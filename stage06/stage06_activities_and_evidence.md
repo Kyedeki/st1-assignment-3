@@ -8,7 +8,7 @@ Service implementation SHA: 31486b1
 Tested integration SHA: 680e407 (documentation PR #3 merge)
 This record distinguishes observed evidence from activities still requiring verification. Passing tests do not establish coverage of every acceptance criterion, and a documentation review is not a substitute for a service-code review.
 
-A Requirement to issue activities
+## A Requirement to issue activities
 FR-02 Patient Search
 - Title: Patient Search by ID.
 - Context: SmartCare must retrieve an existing patient by ID.
@@ -29,7 +29,7 @@ FR-06 Appointment Cancellation and FR-07 Retained History
 - Issue: https://github.com/Kyedeki/st1-assignment-3/issues/2
 Additional service target: Practitioner lookup (PractitionerService.find_practitioner) is present in the inspected code, but an independently linked issue or tutor-agreed criterion has not been verified from supplied records.
 
-B Commit quality
+## B Commit quality
 Original message	Strong or weak?	Reason
 changes	Weak	Does not explain what changed.
 final version	Weak	Gives no technical scope or purpose.
@@ -38,13 +38,14 @@ fix stuff	Weak	Does not identify the defect or fix.
 Prevent cancellation of completed appointments	Strong	Identifies the intended change in behaviour.
 
 
-C Over-scoped PR review
+## C Over-scoped PR review
 Scenario: A cancellation PR also renames unrelated patient fields, restructures unrelated code and adds a dependency.
 - Scope concern: These changes are unrelated to the cancellation requirement, increase review effort and introduce avoidable risk.
 - Architecture/responsibility concern: Renaming patient fields or restructuring other services could break existing consumers and should be handled under its own justified task.
 - Testing/review concern: Reviewers would need to assess unrelated data-model changes and dependency effects, not just cancellation assertions.
 - Recommended action: Keep cancellation and retained-history behaviour in its own focused PR. Split any justified refactoring into separately linked changes; remove an unnecessary dependency or document and review its rationale.
-D Challenge a weak Copilot review
+
+## D Challenge a weak Copilot review
 Copilot statement: “Looks good; tests pass.”
 Missing evidence: It does not identify actual commands, test results, acceptance criteria, assertions, changed lines, invalid inputs, architectural responsibilities, or whether unrelated changes were introduced. Passing tests alone cannot prove correctness.
 1. Does patient lookup return the correct registered patient for an exact existing ID?
@@ -53,7 +54,8 @@ Missing evidence: It does not identify actual commands, test results, acceptance
 4. Do repeated or invalid cancellations raise the specified exception without changing the existing appointment state?
 5. Are the implementation and tests focused on the relevant service contracts without unrelated changes, weak assertions or dependencies?
 Additional question: Which exact assertions support each acceptance criterion, including practitioner lookup?
-E Team workflow agreement
+
+## E Team workflow agreement
 Practice	Proposed agreement
 Branch naming	One descriptive task branch, e.g. feature/patient-lookup or docs/reema-stage6-record.
 Commit messages	Short, specific and meaningful; avoid changes or final.
@@ -65,21 +67,25 @@ Copilot disclosure	Record substantive prompts, findings and human Accept/Modify/
 
 Agreement status: Drafted in the group record; explicit agreement by both members is not independently evidenced here.
 
-F Issue and backlog index
-**Requirement:** FR-03 — Register Practitioner and Supporting Practitioner Lookup.
+## F Issue and backlog index
 
-**Source:** SmartCare A3 Requirements Baseline 2026, Revision 2.
+| Issue / Source | Requirement | Owner | Acceptance criteria / Supporting contract | Status |
+|---|---|---|---|---|
+| [Issue #1](https://github.com/Kyedeki/st1-assignment-3/issues/1) | FR-02 Patient Search | Cassandra Navarro | Retrieve existing patients using valid IDs; validate identifiers and handle unknown patients. | Open |
+| [Issue #2](https://github.com/Kyedeki/st1-assignment-3/issues/2) | FR-06 Appointment Cancellation / FR-07 Retained History | Cassandra Navarro | Cancel scheduled appointments, retain history, reject invalid IDs and illegal transitions. | Open |
+| Requirements Baseline Revision 2 | FR-03 Practitioner Registration / Supporting Practitioner Lookup | Group — owner to confirm | Practitioner lookup is a supporting operation. Identifiers are trimmed, non-blank and case-sensitive. Invalid identifiers raise ValueError; unknown valid identifiers raise LookupError. | Baseline verified; separate Stage 6 criterion/issue pending confirmation |
 
-**Supporting contract:** Practitioner identifiers must be non-blank, trimmed, case-sensitive strings. Invalid identifiers raise `ValueError`, while valid unknown identifiers raise `LookupError` at the service layer.
+### Practitioner Lookup verification
 
-**Implementation:** `PractitionerService.find_practitioner()`.
+- **Source:** SmartCare A3 Requirements Baseline 2026, Revision 2.
+- **Implementation:** `PractitionerService.find_practitioner()`.
+- **Test evidence:** Tests cover valid, unknown, blank, whitespace-padded, case-sensitive and non-string identifiers.
+- **Result:** 28 tests passed, 0 failed, from `project/`.
+- **Traceability:** FR-03 baseline confirmed. A separate Stage 6 criterion or approved issue remains unverified.
 
-**Verification:** Existing practitioner lookup tests cover valid, unknown, blank, whitespace-padded, case-sensitive and non-string identifiers. The corrected test suite passed all 28 tests.
-
-**Traceability status:** Linked to the authoritative FR-03 baseline. A separate Stage 6 handout criterion or tutor-approved issue reference has not yet been confirmed.
 
 
-G Pull request evidence
+## G Pull request evidence
 PR #3 — Stage 6 documentation (merged)
 - PR link and title: https://github.com/Kyedeki/st1-assignment-3/pull/3 — Complete Stage 6 written activities and test evidence.
 - Linked task: Stage 6 activity record and testing/review documentation; not a functional implementation PR.
@@ -118,7 +124,8 @@ Final test and documentation corrections — awaiting PR
 - Reviewer, human-first observations and review link: PENDING: request Cassandra to review the actual test diff and documentation. Human-first review must describe real observations, not copy Copilot's suggestions as if independently discovered.
 - Review changes, recheck, merge outcome and tested integration SHA: PENDING. Branch was pushed to GitHub but no PR/approval/merge is confirmed.
 - Linked issue closure / both members pull/check: PENDING.
-H Copilot collaboration record
+
+## H Copilot collaboration record
 - Member and task: Reema Majed M — inspect Stage 6 SmartCare implementation, tests, requirements and evidence record.
 - Actual prompt/purpose: Asked Copilot Chat inside the VS Code SmartCare workspace for a single evidence-grounded technical report. Scope: review project/smartcare/ services, project/tests/, commits 31486b1 and 680e407, PR #3, and the Stage 6 record; report defects, missing tests, requirement traceability and review provenance. The first browser-based attempt could not access the files; the subsequent workspace review succeeded.
 - Relevant requirements/diff: FR-02 Patient Search, Practitioner Lookup, FR-06 cancellation, FR-07 retained history; actual implementation commit 31486b1; documentation PR #3.
@@ -132,17 +139,31 @@ H Copilot collaboration record
 - Decision — Accept/Modify/Reject: Actual actions support ACCEPT/MODIFY for the incorrect practitioner test and focused cancellation-test improvements: Reema corrected the test and added coverage, with passing verification. PENDING: a separately recorded group decision on documentation and practitioner traceability; a human code reviewer still must inspect the diff.
 - Reason: Focused tests improve checks of the existing service contract without changing production architecture or introducing unrelated features.
 - Verification/evidence: Copilot review output preserved in the conversation; code/test changes committed as 68521ac; user-confirmed 28 passing tests. A PR review and integration SHA for these changes are not yet evidenced.
-I Human versus Copilot review comparison
+
+## I Human versus Copilot review comparison
 - Human reviewer noticed before consulting Copilot: Cassandra reviewed PR #3's documentation and said the changes appeared consistent and could be merged. The current evidence does not contain a pre-Copilot independent human inspection of the service-code diff.
 - Copilot noticed: Wrong service called by practitioner non-string test; missing cancellation negative/boundary tests and retained-state assertions; incomplete traceability and mismatched completion claims; PR #3 did not review the original Python implementation.
 - Overlap: Both assessed the Stage 6 documentation in some form. There is no verified code-review overlap to report.
 - What the human reviewer noticed that Copilot did not: Cassandra explicitly judged the documentation PR suitable to merge. No uniquely human, code-specific pre-Copilot finding is evidenced.
 - What Copilot identified that the human reviewer initially missed: Its report contains technical testing/traceability gaps absent from Cassandra's documentation comment. Whether Cassandra had independently found them elsewhere is unknown.
 - Unsupported or incorrect Copilot suggestion: Copilot did not substantiate a required production-code refactor. Its optional style/cleanup suggestions were not adopted because the review found no functional implementation defect requiring them. Separately, preliminary assistant-authored test examples used invalid appointment construction and nonexistent lookup methods; those were corrected by using the project's passing examples. Do not misattribute those example errors to Copilot.
-- Human judgement accepted, modified or rejected, and why: Reema applied focused test fixes and validated 28 passing tests (Accept/Modify). Unrelated refactoring was deferred (Reject as unnecessary). Other review and documentation decisions await Cassandra's actual review; do not assert approval in advance.
-- Evidence justifying existing merge: Documentation PR #3 received Cassandra's review comment, was merged at 680e407, and the previous suite passed (24 tests). This does not prove the code diff received another-member approval.
-- Evidence required for final PR approval: Cassandra should inspect 68521ac's actual test and documentation diff, verify assertions and retained history, record feedback before merge and confirm a successful integrated run.
-J Contributions
+-
+### Human evaluation of Copilot recommendations
+
+| Decision | Copilot recommendation | Human evaluation and evidence |
+|---|---|---|
+| Accept | Correct the practitioner non-string-ID test. | The original test called PatientService instead of PractitionerService. It was corrected to test PractitionerService.find_practitioner(). |
+| Accept | Add tests for cancellation using unknown and non-string IDs. | Both tests were added and passed. |
+| Accept | Test whitespace handling and retained history after repeated cancellation. | Additional tests were added with assertions checking appointment status and the retained stored object. |
+| Modify | Improve Practitioner Lookup requirement traceability. | The official Requirements Baseline Revision 2 identifies Practitioner Lookup as a supporting operation under FR-03. |
+| Reject | Perform unrelated implementation refactoring. | No critical implementation defect requiring such refactoring was identified. Focused test corrections were preferred. |
+
+**Verification:** Reema ran `py -m pytest` from `project/` after the test corrections. All 28 tests passed.
+
+**Review status:** These decisions reflect Reema's implemented corrections and evaluation of Copilot's findings. Cassandra's independent code review and final approval are still pending.
+
+
+## J Contributions
 Cassandra Navarro — Kyedeki
 - Implementation: Prepared requirement scope and acceptance criteria for FR-02 Patient Search and FR-06/FR-07 Cancellation/History. The implementation commit is recorded above; exact personal Python authorship should be attributed only from actual commit/history evidence.
 - Testing: Specified expected positive/negative lookup, invalid identifier, cancellation and retention behaviour in requirement work.
@@ -161,10 +182,12 @@ Reema Majed M — reema-aboset
 - Debugging/integration: Resolved local Python launcher/pytest setup, corrected invalid test fixtures to use real service registration and booking, fixed stored-history assertions using data_store.find_appointment, updated local main after PR #3 and pushed branch feature/stage6-final-fixes.
 - Documentation/team support: Completed Sections D–F and K–L, drafted H/I based on real Copilot review and updated final evidence.
 - Evidence: PR #3, implementation review record, commit 68521ac.
-K Exit question
+
+## K Exit question
 Why is a high commit count not necessarily evidence of strong contribution?
 A large commit count does not necessarily represent meaningful work because commits vary in complexity and importance. One student may make numerous formatting changes while another designs thorough tests, diagnoses a significant defect, reviews risky code or resolves integration failures. Assess contribution through requirement coverage, code/test quality, review feedback, debugging, integration and traceable decisions, not commit totals alone.
-L Stage 6 formative questions
+
+## L Stage 6 formative questions
 1. What is version control? Git tracks file revisions so developers can compare changes, restore earlier states and coordinate work across a team.
 2. Why is a feature branch useful? It isolates a focused change from the shared main and supports testing and review before merging.
 3. What makes a commit a good engineering commit? It has a focused, understandable diff and a specific message explaining the change.
@@ -175,7 +198,8 @@ L Stage 6 formative questions
 8. What is the appropriate role of GitHub Copilot in pull-request review? It suggests possible issues and test improvements, which a human must validate against the actual code, requirements and assertions. Copilot does not replace human approval.
 9. Why should individual contribution not be judged only by commit count? Valuable work also includes design, testing, debugging, human review, requirement clarification and integration; commit number alone cannot measure impact.
 10. What is the Stage 6 engineering rule? Make requirement-linked, focused changes; test them; independently review the actual diff before merge; record Copilot's assistance accurately; integrate and verify the shared checkpoint.
-M Completion and handover
+
+## M Completion and handover
 - Starting SHA: f1f35ad — shared SmartCare starter.
 - Original implementation SHA: 31486b1 — SmartCare service methods and tests.
 - Original integrated documentation SHA: 680e407 — PR #3 merge into main.
