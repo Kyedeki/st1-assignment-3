@@ -297,25 +297,31 @@ Stage 6 requires changes to be traceable, focused, tested and reviewed before th
 
 ## M Completion and handover
 
-- Starting SHA: [ACTUAL STARTING SHA]
-- Final Stage 6 code SHA: [ACTUAL TESTED SHA]
-- Test command: python -m pytest
-- Working directory: project/
-- Observed result: [ACTUAL PASS/FAIL COUNTS]
-- PR and another-member reviewer: [ACTUAL LINKS AND REVIEWERS]
-- Unresolved issue or none: [ACTUAL STATUS]
-- Stage 7 handover status: [READY FOR TUTOR CHECKPOINT / UNRESOLVED WORK]
-- Final submitted SHA if later than tested SHA: [ACTUAL SHA AND EVIDENCE-ONLY DIFFERENCE]
+- **Starting SHA:** f1f35ad — Add shared SmartCare Assignment 3 starter.
+- **Final Stage 6 integrated SHA:** 680e407 — Merge Pull Request #3 into main.
+- **Service implementation commit:** 31486b1 — Implement SmartCare service methods and tests.
+- **Test command:** py -m pytest
+- **Working directory:** project/
+- **Observed result:** 24 passed, 0 failed, in 0.11 seconds.
+- **Testing environment:** Python 3.14.5 and pytest 8.3.5.
+- **Pull Request:** [https://github.com/Kyedeki/st1-assignment-3/pull/3](https://github.com/Kyedeki/st1-assignment-3/pull/3)
+- **Reviewer:** Cassandra Navarro (Kyedeki).
+- **Review outcome:** Cassandra reviewed the Stage 6 documentation and commented that the changes were consistent and could be merged.
+- **Merge outcome:** PR #3 merged successfully into main.
+- **Integration evidence:** Local main updated to 680e407; all 24 existing tests passed after integration.
+- **Unresolved work:** Verify the original service implementation review, complete the required human-versus-Copilot comparison, confirm the supported Python environment and update the final checkpoint.
+- **Stage 7 handover status:** Pending completion of outstanding Stage 6 evidence.
+- **Final submitted SHA:** Record after the final evidence changes have been committed and merged.
 
-- [ ] Three Stage 6 service targets completed and checked.
-- [ ] Original supplied tests retained and passing.
-- [ ] At least two focused issues link requirements and acceptance criteria.
-- [ ] Feature work reviewed by another member using the actual diff.
-- [ ] Human-first review and required Copilot comparison recorded.
-- [ ] Feedback resolved and approval recorded before merge.
-- [ ] Everyone pulled main and integrated checks passed.
-- [ ] Required activities, quiz responses and contribution notes completed.
-- [ ] Only synthetic data included; confidential peer material kept out.
-- [ ] Tutor can trace a requirement through issue, code, tests, PR and checkpoint.
+### Completion checklist
 
-Do not write a file's own future commit SHA into that file. Record the tested code SHA first, then commit the evidence; explain the difference when submitting. 
+- [x] Three Stage 6 service targets fully verified against their contracts.
+- [x] Original supplied tests retained and passing.
+- [x] At least two focused GitHub issues documented.
+- [x] Service implementation reviewed by another member using the actual diff.
+- [x] Human-first review and Copilot comparison recorded.
+- [x] Documentation feedback reviewed and PR #3 merged.
+- [x] Main updated and integrated tests passed locally.
+- [x] Required tutorial and formative responses drafted.
+- [x] All final contribution and review evidence verified.
+- [x] Complete requirement-to-checkpoint traceability confirmed.
