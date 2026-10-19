@@ -114,7 +114,46 @@ Note: This is the proposed team agreement and must be confirmed by both members.
 
 ## G Pull request evidence
 
-Complete this block separately for each real pull request.
+### Pull Request #3 — Stage 6 Documentation
+
+- **PR link and title:** https://github.com/Kyedeki/st1-assignment-3/pull/3 — Complete Stage 6 written activities and test evidence
+- **Linked requirement:** Stage 6 documentation and verification evidence.
+- **Feature branch:** docs/reema-stage6-record
+- **Author:** Reema Majed M (reema-aboset)
+- **Changed behaviour:** Documentation changes only; no SmartCare application behaviour changed.
+- **Meaningful commits:**
+  - 26f60d5 — Complete Stage 6 written activities and test evidence
+  - ec057c4 — Update Reema Stage 6 contribution evidence
+- **Test command:** py -m pytest
+- **Working directory:** project/
+- **Observed result:** 24 passed in 0.06 seconds, 0 failures.
+- **Test environment:** Python 3.14.5, pytest 8.3.5.
+- **Another-member reviewer:** Cassandra Navarro (Kyedeki) — review requested, pending.
+- **Human observations before Copilot:** Pending Cassandra's actual review.
+- **Requirement and scope checks:** Documentation-only PR; written answers, issue references, contribution evidence and remaining placeholders require review.
+- **Key feedback:** Pending.
+- **Author response and verification:** Pending reviewer feedback.
+- **Reviewer recheck and approval:** Pending.
+- **Merge outcome and SHA:** Not yet merged.
+- **Significant Copilot assistance:** Record actual GitHub Copilot use and human verification when completed.
+- **Linked issue closure:** Not applicable to this documentation-only PR unless a dedicated documentation issue is linked.
+- **Each member updated main:** Pending merge.
+- **Integrated verification after merge:** Pending.
+
+### Cassandra Navarro — Kyedeki
+
+- **Implementation:** Prepared the implementation scope and functional requirements for Patient Search (FR-02), Appointment Cancellation (FR-06) and Retained History (FR-07).
+- **Testing:** Defined expected validation behaviour and testing requirements for patient lookup, appointment cancellation, invalid identifiers and retained appointment history.
+- **Review:** Analysed an over-scoped pull request in Section C, identifying unrelated modifications, architectural concerns and testing risks. Requested reviewer for documentation PR #3; approval remains pending.
+- **Issue refinement:** Prepared GitHub Issues #1 and #2 with requirement descriptions, acceptance criteria, scope and Definition of Done.
+- **Design and responsibility discussion:** Documented the expected service behaviour, including input validation, exception handling and retention of cancelled appointments.
+- **Debugging or integration:** No individual debugging or integration activity recorded yet.
+- **Documentation or team support:** Completed Sections A–C of the Stage 6 activities and evidence record.
+
+**Evidence:**
+- https://github.com/Kyedeki/st1-assignment-3/issues/1
+- https://github.com/Kyedeki/st1-assignment-3/issues/2
+- https://github.com/Kyedeki/st1-assignment-3/pull/3 
 
 ### Pull request 1 — Patient Search
 
