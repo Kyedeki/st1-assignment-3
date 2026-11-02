@@ -35,7 +35,7 @@ def test_patient_valid_fields_are_trimmed():
     (None,"Alex Example"),
     ("P1",None),
 ])
-def test_patient_rejects_invalid_required_test(patient_id,name):
+def test_patient_rejects_invalid_required_fields(patient_id,name):
     with pytest.raises(ValueError):
         Patient(patient_id,name)
 
@@ -53,7 +53,7 @@ def test_practitioner_valid_fields_are_trimmed():
     ("D1", None, "General"),
     ("D1", "Taylor Example", None),
 ])
-def test_practitioner_rejects_invalid_required_test(practitioner_id,name,speciality):
+def test_practitioner_rejects_invalid_required_fields(practitioner_id,name,speciality):
     with pytest.raises(ValueError):
         Practitioner(practitioner_id, name, speciality)
 
@@ -101,7 +101,7 @@ def test_appointment_rejects_invalid_status():
     with pytest.raises(ValueError):
         Appointment("A1",patient,practitioner,datetime(2026,10,20,10,30),"scheduled")
 
-def test_scheduled_appointment_can_be_cancelled_again():
+def test_repeated_cancellation_is_rejected():
     appointment = make_appointment()
     appointment.cancel()
 
@@ -138,4 +138,7 @@ def test_appointment_id_cannot_be_changed():
 
     assert appointment.appointment_id == "A1"
 
-
+def test_cancellation_changes_status():
+    appointment =make_appointment()
+    appointment.cancel()
+    assert appointment.status is AppointmentStatus.CANCELLED

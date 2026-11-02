@@ -320,8 +320,22 @@ def test_cancel_unknown_appointment_preserves_other_appointment():
      with pytest.raises(ValueError):
          appointment_service.cancel_appointment("A2")
 
-
      assert completed_appointment.status is AppointmentStatus.COMPLETED
      assert scheduled_appointment.status is AppointmentStatus.SCHEDULED
      assert data_store.find_appointment("A1") is scheduled_appointment
      assert data_store.find_appointment("A2") is completed_appointment
+
+def test_find_appointment_by_id():
+    data_store = SmartCareDataStore()
+    patient_service = PatientService(data_store)
+    practitioner_service = PractitionerService(data_store)
+    appointment_service = AppointmentService(data_store)
+
+    patient_service.register_patient("P1", "Alex Example")
+    practitioner_service.register_practitioner("D1", "Taylor Example", "General")
+    appointment = appointment_service.book_appointment("A1", "P1", "D1", datetime(2026, 10, 20, 10,30))
+
+    result = appointment_service.find_appointment("A1")
+
+    assert result is appointment
+    assert result.appointment_id == "A1"
