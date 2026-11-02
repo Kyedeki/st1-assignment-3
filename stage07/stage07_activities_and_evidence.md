@@ -88,25 +88,56 @@ Arrange test data; act on one meaningful behaviour; assert the required observab
 
 Cover Patient/Practitioner construction and validation; Appointment construction, initial status, cancellation and illegal/repeated transitions. Preserve the four reference intentions described in handout Part C.
 
-| Test ID | Behaviour | Test file/function | Result |
-|---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] |
+| Test ID | Behaviour                                                                                                   | Test file/function                                       | Result                                                                                                                                                                        |
+|---------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1       | The patient construction accepts the valid values, it trims the surrounding whitespace                      | test_patient_valid_fields_are_trimmed                    | there are problems with the implementation and validation, but after fixing the problem the test result passed                                                                |
+| 2       | The patient validation should reject any blank or invalid fields                                            | test_patient_rejects_invalid_required_test               | Passed                                                                                                                                                                        |
+| 3       | The practitioner construction should accepd the valid values and should trim surrounding whitespace         | test_paractitioner_valid_fields_are_trimmed              | there are problems with the implementation and validation, but after fixing the problem the test result passed                                                                |
+| 4       | The practitioner validation rejects any blank or invalid fields                                             | test_practitioner_rejects_invalid_required_test          | Passed                                                                                                                                                                        |
+| 5       | The appointment construction still has the ID, participant objects, date/time and initial schedule status   | test_appointment_starts_scheduled_and_keeps_participants | there are problems with the implementation, the initial result of the test that it failed but after fixing the issue the test passed                                          |
+| 6       | The appointment rejects the invalid participants objects                                                    | test_appointment_rejects_invalid_participant_objects     | Passed                                                                                                                                                                        |
+| 7       | Appointment  rejects invalid values for date and time                                                       | test_appointment_rejects_invalid_status                  | Passed                                                                                                                                                                        |
+| 8       | Appointment rejects an invalid status                                                                       | test_patient_valid_fields_are_trimmed                    | Passed                                                                                                                                                                        |
+| 9       | Scheduled appointment can be cancelled, and a repeated cancellation is rejected without changing the status | test_scheduled_appointment_can_be_cancelled_again        | Initial erros have been encountered and it cancellation tests had been corrected and the final result of the test that it passed                                              |
+| 10      | Completed appointment cannot be cancelled, and the status is still completed                                | test_completed_appointment_cannot_be_cancelled           | There are probles with the invalid transitions and state preservation and the initial result of it that it failed the testin, however after fixing the errors the test passed |
+
 
 ## F Service Test Evidence
 
 Use fresh shared SmartCareDataStore state, registered objects and completed Stage 6 services.
 
-| Test ID | Behaviour | Requirement / criterion | Test file/function | Result |
-|---|---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] | [complete] |
+| Test ID | Behaviour                                                                           | Requirement / criterion                                    | Test file/function                                          | Result |
+|---------|-------------------------------------------------------------------------------------|------------------------------------------------------------|-------------------------------------------------------------|--------|
+| 1       | Find an existing patient and return the registered patient                          | FR-02- Patient Search                                      | test_find_patient                                           | pass   |
+| 2       | Reject an unkniwn patient ID                                                        | FR-02- Patient Search                                      | test_find_unknown_patient                                   | pass   |
+| 3       | Find an existing practitioner and return                                            | FR-03- Supporting practitioner lookup contract under       | test_find_practitioner                                      | pass   |
+| 4       | Rejecting unknown practitioner ID                                                   | FR-03- Supporting practitioner lookup contract under       | test_find_unknown practitioner                              | pass   |
+| 5       | Cancel a schedule appointment and retain it in the data store                       | FR-06- Cancel Appointment, FR-07- Retain Cancelled History | test_cancel_appointment                                     | pass   |
+| 6       | Reject repeated cancallation without changing the cancelled status                  | FR-06- Cancel Appointment                                  | test_cancel_appointment_twice                               | pass   |
+| 7       | Reject cancellation of a complete appointment without changing the status           | FR-06- Cancel Appointment                                  | test_cancel_completed_appointment                           | pass   |
+| 8       | Reject cancellation of an unknown appointment while preservin existing appointments | FR-06- Cancel Appoitnment                                  | test_cancel_unknown_appointment_preserves_other_appointment | pass   |
+
 
 ## G Negative and Boundary Cases
 
 Connect cases to actual contracts and verify unchanged state after rejection.
 
-| Behaviour | Boundary/invalid input | Expected result | Test ID |
-|---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] |
+| Behaviour           | Boundary/invalid input                 | Expected result                                                        | Test ID |
+|---------------------|----------------------------------------|------------------------------------------------------------------------|---------|
+| Find Patient        | Blank patient ID                       | no patient search is performed                                         | 1       |
+| Find Patient        | Unknown patient ID                     | raises look up error                                                   | 2       |
+| Find Patient        | Non-string patient ID                  | raises value error                                                     | 3       |
+| Find Practitioner   | Blank patient ID                       | no practitioner search is performed                                    | 4       |
+| Find Practitioner   | Unknown patient ID                     | raises look up error                                                   | 5       |
+| Find Practitioner   | Non-string patient ID                  | raises value error                                                     | 6       |
+| Find Appointment    | Unknown appointment ID                 | raises look up error                                                   | 7       |
+| Cancel Appointment  | Non-string appointment ID              | raises look up error                                                   | 8       |
+| Cancel Appointment  | Unknown appointment ID                 | raises look up error                                                   | 9       |
+| Cancel Appointment  | Cancelled appointment                  | raises value error and the status remains cancelled                    | 10      |
+| Cancel Appointment  | Appointment ID with surrounding spaces | trim the ID and cancel the appointment                                 | 11      |
+| Cancel Appointment  | Completed Appointment                  | Raises value error but status remains completed                        | 12      |
+| Cancel Appointment  | Repeated cancellation                  | rejects the second cancellation and preserbe the original cancellation | 13      |
+| Cancel Appointment  | Blanke appointment ID                  | raises value error                                                     | 14      |
 
 ## H GitHub Copilot Test Design
 

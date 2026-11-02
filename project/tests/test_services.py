@@ -289,3 +289,39 @@ def test_repeated_cancellation_preserves_history():
 
     assert appointment.status == AppointmentStatus.CANCELLED
     assert data_store.find_appointment("A1") is appointment
+
+def test_cancel_unknown_appointment_preserves_existing_history():
+    data_store = SmartCareDataStore()
+    patient_service = PatientService(data_store)
+    practitioner_service = PractitionerService(data_store)
+    appointment_service = AppointmentService(data_store)
+
+    patient_service.register_patient("P1", "Alex Example")
+    practitioner_service.register_practitioner("D1", "Taylor Example", "General")
+    appointment = appointment_service.book_appointment("A1", "P1", "D1", datetime(2026, 10, 1, 9))
+
+    with pytest.raises(LookupError):
+        appointment_service.cancel_appointment("UNKNOWN")
+    assert appointment.status is AppointmentStatus.SCHEDULED
+    assert data_store.find_appointment("A1") is appointment
+
+def test_cancel_unknown_appointment_preserves_other_appointment():
+     data_store = SmartCareDataStore()
+     patient_service = PatientService(data_store)
+     practitioner_service = PractitionerService(data_store)
+     appointment_service = AppointmentService(data_store)
+
+     patient_service.register_patient("P1", "Alex Example")
+     practitioner_service.register_practitioner('D1', 'Taylor Example', 'General')
+     scheduled_appointment = appointment_service.book_appointment("A1", "P1", "D1", datetime(2026, 10, 1, 9))
+     completed_appointment = Appointment("A2",scheduled_appointment.patient, scheduled_appointment.practitioner, datetime(2026, 10, 1, 10), AppointmentStatus.COMPLETED,)
+     data_store.add_appointment(completed_appointment)
+
+     with pytest.raises(ValueError):
+         appointment_service.cancel_appointment("A2")
+
+
+     assert completed_appointment.status is AppointmentStatus.COMPLETED
+     assert scheduled_appointment.status is AppointmentStatus.SCHEDULED
+     assert data_store.find_appointment("A1") is scheduled_appointment
+     assert data_store.find_appointment("A2") is completed_appointment
