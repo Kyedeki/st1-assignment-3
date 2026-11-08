@@ -56,83 +56,216 @@ Traceback — exception/assertion; expected/observed values; test line; call pat
 
 ## B. Stage 7 baseline and safe preparation
 
-- Stage 7 code SHA and requirement baseline: [complete]
-- Baseline test command / working directory / observed result / evidence: [complete]
-- Clean preparation SHA if a record-only commit followed Stage 7: [complete]
-- Branch and preparer / how teammates obtained this branch: [complete]
-- Downloaded tool version, source SHA256 and --check outcome: [complete]
-- --apply and --verify output summaries / artefact references: [complete]
-- Bounded diff inspected and recovery location (not committed): [complete]
-- Prepared faulty-state commit SHA: [complete]
-- Preparation or recovery issues and resolution, if any: [complete]
-- Initial prepared full-suite command / result / key failures: [complete]
+- **Stage 7 code SHA and requirement baseline:** Pending verification of the final integrated Stage 7 commit and requirements.
+
+- **Baseline test command / working directory / observed result / evidence:** Stage 7 baseline result still needs to be confirmed from the earlier test records.
+
+- **Clean preparation SHA if a record-only commit followed Stage 7:** Pending verification.
+
+- **Branch and preparer / how teammates obtained this branch:** The Stage 8 debugging branch is `debug/stage08`. The branch is up to date with `origin/debug/stage08`. Teammate access and preparation ownership still need to be recorded.
+
+- **Downloaded tool version, source SHA256 and --check outcome:** Pending verification from the Stage 8 preparation utility records.
+
+- **--apply and --verify output summaries / artefact references:** Pending verification from the preparation utility output.
+
+- **Bounded diff inspected and recovery location (not committed):** Pending verification.
+
+- **Prepared faulty-state commit SHA:** `3810208` — `prepare debug stage 08`.
+
+- **Preparation or recovery issues and resolution, if any:** Not yet confirmed.
+
+- **Initial prepared full-suite command / result / key failures:** Executed the pytest suite from the `project/` directory on branch `debug/stage08`. The result was **50 passed and 5 failed** in approximately 0.25 seconds. Four failures involved cancelled appointment retrieval or repeated cancellation, and one involved practitioner conflict validation.
+
+**Git verification:** The working tree was clean, with no uncommitted changes. The local Stage 8 branch was up to date with its remote branch.
+
+**Evidence:** VS Code terminal screenshots showing the Git status, commit information and pytest failure summary.
 
 ## C. F8-01 diagnosis and repair
 
-- Symptom / observed behaviour: [complete]
-- Expected behaviour and requirement: [complete]
-- Minimal synthetic reproduction steps: [complete]
-- Meaningful failing test path/name and exact relevant failure: [complete]
-- Human hypothesis and intended checks: see E, F8-01.
-- Supported root cause and inspected code/runtime evidence: [complete after diagnosis]
-- Smallest justified fix / diff / why other behaviour is preserved: [complete]
-- Repair SHA / focused verification result: [complete]
+- **Symptom / observed behaviour:** A cancelled appointment could not be retrieved using its appointment ID.
 
+- **Expected behaviour and requirement:** FR-07 requires cancelled appointment history to remain accessible. The lookup should return the appointment even after cancellation.
+
+- **Minimal synthetic reproduction steps:** Create appointment A1, cancel it, then retrieve it using `find_appointment("A1")`.
+
+- **Meaningful failing test path/name and exact relevant failure:** `tests/test_services.py::test_cancel_appointment`, line 95. The assertion expected the appointment object, but `find_appointment("A1")` returned `None`. The focused test result was 1 failed in 0.16 seconds.
+
+- **Human hypothesis and intended checks:** The lookup might be excluding cancelled appointments. Inspect the status filtering in `find_appointment()` and compare the stored records with the lookup result. This hypothesis was discussed with AI assistance.
+
+- **Supported root cause and inspected code/runtime evidence:** The provided faulty implementation contains a condition excluding appointments whose status is `cancelled`. The focused test confirms that retrieval returns `None`. The datastore contents still need to be inspected to establish whether the appointment remains stored.
+
+- **Smallest justified fix / diff / why other behaviour is preserved:** Pending the required diagnosis and Copilot review.
+
+- **Repair SHA / focused verification result:** Pending.
 ## D. F8-02 diagnosis and repair
 
-- Symptom / observed behaviour: [complete]
-- Expected behaviour and requirement: [complete]
-- Minimal synthetic reproduction steps: [complete]
-- Meaningful failing test path/name and exact relevant failure: [complete]
-- Human hypothesis and intended checks: see E, F8-02.
-- Supported root cause and inspected code/runtime evidence: [complete after diagnosis]
-- Smallest justified fix / diff / why other behaviour is preserved: [complete]
-- Repair SHA / focused verification result: [complete]
+- **Symptom / observed behaviour:** The practitioner conflict test failed because the booking operation did not raise the expected `ValueError`.
+
+- **Expected behaviour and requirement:** Under AC-04.2, the booking system should detect scheduling conflicts involving the same practitioner at the same date and time. Different practitioners should be able to have appointments at the same time, provided no other booking rule is violated.
+
+- **Minimal synthetic reproduction steps:** Create a scheduled appointment for practitioner P1 at a specified time. Attempt another booking for P1 at the same time and check whether a `ValueError` is raised. Also check a booking for practitioner P2 at that time to confirm that different practitioners do not incorrectly conflict.
+
+- **Meaningful failing test path/name and exact relevant failure:** `tests/test_starter.py::test_conflict_rule_and_different_practitioner`, line 127. The test expected `ValueError`, but no exception was raised. The focused pytest result was 1 failed in 0.13 seconds.
+
+- **Human hypothesis and intended checks:** The practitioner comparison in `has_practitioner_conflict()` may be reversed. Inspect the comparison operator and test same-practitioner and different-practitioner bookings at identical times. This hypothesis was discussed with AI assistance.
+
+- **Supported root cause and inspected code/runtime evidence:** Inspection of `SmartCareDataStore.has_practitioner_conflict()` identified the condition `appointment.practitioner.practitioner_id != practitioner_id`. The focused failing test showed that the booking operation did not reject the conflicting appointment as expected. The reversed comparison is the leading cause, subject to confirming the complete test setup and requirement.
+
+- **Smallest justified fix / diff / why other behaviour is preserved:** Pending completion of the required diagnosis and Copilot review.
+
+- **Repair SHA / focused verification result:** Pending repair and testing.
 
 ## E. Human-first hypotheses
 
-Complete both entries BEFORE Copilot. C/D supply observed/expected/reproduction/test; retain those initial facts and link them here.
-
 ### F8-01 human entry
-Likely cause and why plausible: [complete]
-Evidence intended to inspect / competing explanation / discriminating check: [complete]
-Member and saved sequence/time or commit showing this preceded consultation: [complete]
+
+**Likely cause and why plausible:** The `find_appointment()` method appears to exclude cancelled appointments from lookup results because it contains the condition `appointment.status.value != "cancelled"`. This explains why the focused test returned `None` instead of the expected appointment object. The hypothesis is consistent with FR-07, which requires cancelled appointment history to remain accessible.
+
+**Evidence intended to inspect:** The implementations of `find_appointment()`, `list_appointments()`, and `cancel_appointment()`, the appointment status after cancellation, and the failing assertion in `tests/test_services.py::test_cancel_appointment` at line 95.
+
+**Competing explanation:** The cancellation service might have removed the appointment from the datastore rather than retaining it with a cancelled status.
+
+**Discriminating check:** Compare the appointments returned by `list_appointments()` with the result of `find_appointment("A1")` after cancellation. If A1 remains in the stored list while the lookup returns `None`, this would support the lookup-filter hypothesis and rule out deletion as the immediate explanation.
+
+**Member and saved sequence/time or commit:** Reema Aboset investigated F8-01 with ChatGPT assistance before consulting GitHub Copilot. The initial investigation involved inspecting the source code and reproducing the failing cancellation test. The actual timestamp or saved evidence reference should be added from the investigation record. The prepared faulty-state commit was `3810208`; this identifies the faulty code version, not the timestamp of the hypothesis.
 
 ### F8-02 human entry
-Likely cause and why plausible: [complete]
-Evidence intended to inspect / competing explanation / discriminating check: [complete]
-Member and saved sequence/time or commit showing this preceded consultation: [complete]
+
+**Likely cause and why plausible:** The `has_practitioner_conflict()` method uses `!=` rather than `==` when comparing practitioner IDs. This may cause the method to miss conflicts involving the same practitioner while incorrectly identifying different practitioners as conflicting.
+
+**Evidence intended to inspect:** The practitioner ID comparison in `has_practitioner_conflict()`, the booking service's conflict-checking logic, and the test setup in `tests/test_starter.py`. The focused test failed at line 127 because the expected `ValueError` was not raised.
+
+**Competing explanation:** The failure could be caused by different appointment times, an incorrect practitioner ID, an appointment that is not scheduled, or an issue in the test setup.
+
+**Discriminating check:** Compare bookings for the same practitioner at the same time with bookings for different practitioners at the same time. Inspect the conflict-checking return values and compare them with AC-04.2.
+
+**Member and saved sequence/time or commit:** Reema Aboset investigated F8-02 with ChatGPT assistance before consulting GitHub Copilot. The investigation involved examining the practitioner comparison and reproducing the failing test. The actual timestamp or saved evidence reference should be added from the investigation record.
+
+---
 
 ## F. GitHub Copilot prompts, findings and human decisions
 
-Use the full handout prompt separately for BOTH defects, after E. Keep each actual prompt or accessible reference; include observed behaviour, expected behaviour, reproduction, failing test, human hypothesis, relevant code, three ranked causes and discriminating checks, with the no-rewrite/no-invented-requirements constraints.
-
 ### F8-01 Copilot review
-Actual prompt / output reference and member: [complete]
-1. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [complete]
-2. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [complete]
-3. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [complete]
-Final human conclusion and comparison with initial hypothesis: [complete]
+
+**Actual prompt / output reference and member:** Reema Aboset consulted GitHub Copilot Chat after the initial debugging investigation. The prompt included the observed cancelled-appointment lookup failure, expected behaviour under FR-07, reproduction steps, failing test, initial hypothesis, competing explanation and relevant source files. Copilot was instructed to identify three ranked possible causes with evidence checks, without modifying files, running commands, rewriting the application or inventing requirements.
+
+**Copilot evidence reference:** The actual F8-01 Copilot conversation should be preserved in the Stage 8 evidence folder. Add the saved file path or accessible conversation reference once available.
+
+**1. Ranked suggestion — Cancelled-status filter in the datastore lookup**
+
+- **Evidence check:** Inspect `SmartCareDataStore.find_appointment()` and compare its conditions with the failing cancellation test.
+- **Observed evidence:** The method contains `appointment.status.value != "cancelled"`, which prevents cancelled appointments from being returned. The focused test `tests/test_services.py::test_cancel_appointment` failed at line 95 because `find_appointment("A1")` returned `None` instead of the expected appointment object.
+- **Evaluation:** Correct. The inspected source and failing test directly support this diagnosis.
+- **Human decision:** Accept the diagnosis. The proposed minimal repair is to remove the cancelled-status filtering while preserving appointment ID validation and normal lookup behaviour.
+
+**2. Ranked suggestion — Appointment removed from storage during cancellation**
+
+- **Evidence check:** Inspect `AppointmentService.cancel_appointment()`, `Appointment.cancel()` and datastore storage operations.
+- **Observed evidence:** Copilot identified that cancellation changes the appointment's status rather than explicitly deleting it. No public appointment-removal operation was found in the inspected implementation. Direct runtime confirmation of the stored A1 record is still pending.
+- **Evaluation:** Unlikely. The inspected implementation does not support deletion as the cause of the observed lookup failure.
+- **Human decision:** Reject this as the currently supported explanation, while retaining the proposed runtime check to confirm that A1 remains in storage.
+
+**3. Ranked suggestion — Appointment ID or datastore mismatch**
+
+- **Evidence check:** Inspect the test setup, appointment ID handling and datastore references used during creation, cancellation and retrieval.
+- **Observed evidence:** Copilot found that the test uses the same datastore for booking and retrieval. The lookup request uses the expected appointment ID, and the available source evidence does not indicate an ID or datastore mismatch.
+- **Evaluation:** Unsupported and very unlikely.
+- **Human decision:** Reject this explanation because the inspected test setup and source code do not support it.
+
+**Final human conclusion and comparison with initial hypothesis:** Copilot's highest-ranked diagnosis agreed with the earlier hypothesis that cancelled appointments were being excluded by the lookup method. The failing test and source-code inspection support the cancelled-status filter as the root cause. The alternative explanations were considered but lacked supporting evidence. The smallest justified repair is to remove the status restriction while preserving appointment ID validation and normal lookup behaviour. The repair has not yet been applied, and passing regression verification is still required.
 
 ### F8-02 Copilot review
-Actual prompt / output reference and member: [complete]
-1. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [complete]
-2. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [complete]
-3. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [complete]
-Final human conclusion and comparison with initial hypothesis: [complete]
 
-## G. Failing to passing regression evidence
+### F8-02 Copilot review
 
-| Checkpoint | Code SHA or precise diff | Command and working directory | Actual result and artefact reference |
-|---|---|---|---|
-| F8-01 before repair | [complete] | [complete] | [complete] |
-| F8-01 after repair | [complete] | [complete] | [complete] |
-| F8-02 before repair | [complete] | [complete] | [complete] |
-| F8-02 after repair | [complete] | [complete] | [complete] |
-| Full suite after both repairs, before refactor | [complete] | [complete] | [complete] |
+**Actual prompt / output reference and member:** Reema Aboset consulted GitHub Copilot Chat to investigate F8-02 after documenting the initial hypothesis. The prompt included the observed failure, expected practitioner-conflict behaviour under AC-04.2, reproduction steps, the failing test, the initial hypothesis and competing explanations. Copilot inspected the datastore, booking service and test code without changing files or running commands.
 
-Explain how the assertions detect each relevant incorrect result and protect previous behaviour: [complete]
-Unrelated failures investigated / resolution: [complete or not applicable with reason]
+**Copilot evidence reference:** The actual F8-02 prompt and response should be saved in the Stage 8 evidence folder. Add the saved reference once available.
+
+**1. Ranked suggestion — Reversed practitioner comparison**
+
+- **Evidence check:** Inspect the practitioner ID comparison in `has_practitioner_conflict()` and verify how the booking service calls this method.
+- **Observed evidence:** The method uses `appointment.practitioner.practitioner_id != practitioner_id`. This condition is false when an existing and requested appointment involve the same practitioner. Consequently, a conflicting appointment may be missed. Copilot also confirmed that `book_appointment()` calls the conflict checker with the requested practitioner ID and timestamp.
+- **Evaluation:** Correct. Source inspection supports this diagnosis as the leading cause of the failing test.
+- **Human decision:** Accept. The proposed minimal repair is to change the practitioner comparison from `!=` to `==` without modifying unrelated booking rules.
+
+**2. Ranked suggestion — Different appointment timestamps**
+
+- **Evidence check:** Inspect the timestamps used in `tests/test_starter.py::test_conflict_rule_and_different_practitioner`.
+- **Observed evidence:** The test defines `when` once and passes the same value to both bookings involving practitioner D1. The conflict checker compares appointment timestamps using equality.
+- **Evaluation:** Unlikely. The inspected test setup does not support a timestamp mismatch, although the runtime values were not separately inspected.
+- **Human decision:** Reject as the currently supported cause.
+
+**3. Ranked suggestion — Existing appointment is not scheduled**
+
+- **Evidence check:** Inspect appointment creation, the default appointment status and the status condition in `has_practitioner_conflict()`.
+- **Observed evidence:** The test creates A1 using `book_appointment()`. The `Appointment` domain model defaults its status to `SCHEDULED`, and the conflict checker considers scheduled appointments. Copilot did not find evidence that A1 changes status before the second booking.
+- **Evaluation:** Unlikely. The inspected booking path indicates that A1 should be scheduled.
+- **Human decision:** Reject as the currently supported cause, subject to runtime verification if needed.
+
+**Final human conclusion and comparison with initial hypothesis:** Copilot's highest-ranked diagnosis agrees with the earlier hypothesis that the practitioner comparison is reversed. The failing test and inspected code support this explanation. The alternative causes involving timestamps and appointment status were considered but were not supported by the test setup or appointment creation logic. The smallest justified repair is to change `!=` to `==` in `has_practitioner_conflict()`. The repair has not yet been applied, and passing regression verification is still required.
+
+## G. Failing-to-passing regression evidence
+
+### F8-01 — Cancelled appointment history
+
+**Requirement:** FR-07 — Cancelled appointment history must remain accessible.
+
+**Before repair:** The focused test `tests/test_services.py::test_cancel_appointment` failed at line 95 because `find_appointment("A1")` returned `None` instead of the appointment object.
+
+**Root cause:** The datastore lookup excluded appointments with a status of `"cancelled"`.
+
+**Minimal repair:** Removed the cancelled-status restriction from `SmartCareDataStore.find_appointment()` while preserving appointment ID validation and normal lookup behaviour.
+
+**Focused test command:**
+
+`py -m pytest tests/test_services.py::test_cancel_appointment -v --tb=short`
+
+**After repair:** PASSED — 1 test passed in 0.05 seconds.
+
+**Repair commit:** `2b641de`
+
+### F8-02 — Practitioner scheduling conflict
+
+**Requirement:** AC-04.2 — Scheduling conflicts must be detected for the same practitioner at the same date and time.
+
+**Before repair:** The focused test `tests/test_starter.py::test_conflict_rule_and_different_practitioner` failed at line 127 because the expected `ValueError` was not raised.
+
+**Root cause:** The practitioner comparison in `has_practitioner_conflict()` used `!=` instead of `==`.
+
+**Minimal repair:** Changed the comparison to `appointment.practitioner.practitioner_id == practitioner_id` while preserving the other scheduling conditions.
+
+**Focused test command:**
+
+`py -m pytest tests/test_starter.py::test_conflict_rule_and_different_practitioner -v --tb=short`
+
+**After repair:** PASSED — 1 test passed in 0.06 seconds.
+
+**Repair commit:** `2b641de`
+
+### Full regression verification before refactoring
+
+**Repository branch:** `debug/stage08`
+
+**Working directory:** `project/`
+
+**Faulty-state commit:** `3810208`
+
+**Repair commit:** `2b641de`
+
+**Full-suite baseline before repairs:** 50 passed, 5 failed.
+
+**Verification command:**
+
+`py -m pytest -v --tb=short`
+
+**Full-suite result after repairs:** 55 passed, 0 failed, in 0.12 seconds.
+
+**Environment:** Windows, Python 3.14.5, pytest 8.3.5.
+
+**Evidence:** VS Code terminal outputs recorded the focused failures before repair, focused passing tests after repair, and full-suite passing result before refactoring. The Git log confirmed repair commit `2b641de`, and `git status --short` returned no changes immediately after the commit.
+
+**Conclusion:** Both defects were repaired using minimal changes. Their focused regression tests passed, and the complete existing test suite passed with no reported failures. This provides the verified passing baseline for the separate behaviour-preserving refactoring activity in Section H.
 
 ## H. Refactoring decision and before/after verification
 
