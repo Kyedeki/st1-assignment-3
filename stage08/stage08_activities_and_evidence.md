@@ -205,75 +205,67 @@ Traceback — exception/assertion; expected/observed values; test line; call pat
 
 **Final human conclusion and comparison with initial hypothesis:** Copilot's highest-ranked diagnosis agrees with the earlier hypothesis that the practitioner comparison is reversed. The failing test and inspected code support this explanation. The alternative causes involving timestamps and appointment status were considered but were not supported by the test setup or appointment creation logic. The smallest justified repair is to change `!=` to `==` in `has_practitioner_conflict()`. The repair has not yet been applied, and passing regression verification is still required.
 
-## G. Failing to passing regression evidence
+## G. Failing-to-passing regression evidence
 
-### F8-01 focused regression evidence
+### F8-01 — Cancelled appointment history
 
-**Working directory:** `project/`
+**Requirement:** FR-07 — Cancelled appointment history must remain accessible.
 
-**Before repair:** `tests/test_services.py::test_cancel_appointment` failed because `find_appointment("A1")` returned `None` instead of the expected appointment object.
+**Before repair:** The focused test `tests/test_services.py::test_cancel_appointment` failed at line 95 because `find_appointment("A1")` returned `None` instead of the appointment object.
 
-**Repair applied:** Removed the cancelled-status restriction from `SmartCareDataStore.find_appointment()` while preserving appointment ID validation and lookup behaviour.
+**Root cause:** The datastore lookup excluded appointments with a status of `"cancelled"`.
 
-**Verification command:**
+**Minimal repair:** Removed the cancelled-status restriction from `SmartCareDataStore.find_appointment()` while preserving appointment ID validation and normal lookup behaviour.
+
+**Focused test command:**
+
 `py -m pytest tests/test_services.py::test_cancel_appointment -v --tb=short`
 
 **After repair:** PASSED — 1 test passed in 0.05 seconds.
 
-**Evidence:** VS Code terminal output showing `test_cancel_appointment PASSED [100%]`.
+**Repair commit:** `2b641de`
 
-**Repair commit SHA:** Pending commit.
+### F8-02 — Practitioner scheduling conflict
 
-**Full regression suite:** Pending verification.
-### F8-02 focused regression evidence
+**Requirement:** AC-04.2 — Scheduling conflicts must be detected for the same practitioner at the same date and time.
 
-**Working directory:** `project/`
+**Before repair:** The focused test `tests/test_starter.py::test_conflict_rule_and_different_practitioner` failed at line 127 because the expected `ValueError` was not raised.
 
-**Before repair:** `tests/test_starter.py::test_conflict_rule_and_different_practitioner` failed at line 127 because the expected `ValueError` was not raised.
+**Root cause:** The practitioner comparison in `has_practitioner_conflict()` used `!=` instead of `==`.
 
-**Repair applied:** Changed `appointment.practitioner.practitioner_id != practitioner_id` to `appointment.practitioner.practitioner_id == practitioner_id` in `SmartCareDataStore.has_practitioner_conflict()`. No other conflict conditions were intentionally changed.
+**Minimal repair:** Changed the comparison to `appointment.practitioner.practitioner_id == practitioner_id` while preserving the other scheduling conditions.
 
-**Verification command:**
+**Focused test command:**
+
 `py -m pytest tests/test_starter.py::test_conflict_rule_and_different_practitioner -v --tb=short`
 
 **After repair:** PASSED — 1 test passed in 0.06 seconds.
 
-**Evidence:** VS Code terminal output showing `test_conflict_rule_and_different_practitioner PASSED [100%]`.
+**Repair commit:** `2b641de`
 
-**Repair commit SHA:** Pending commit.
-
-**Full regression suite:** Pending verification.
 ### Full regression verification before refactoring
+
+**Repository branch:** `debug/stage08`
 
 **Working directory:** `project/`
 
-**Branch:** `debug/stage08`
-
 **Faulty-state commit:** `3810208`
 
-**Baseline before repairs:** 50 tests passed and 5 tests failed.
+**Repair commit:** `2b641de`
 
-**Repairs completed:**
+**Full-suite baseline before repairs:** 50 passed, 5 failed.
 
-- **F8-01:** Removed the cancelled-status restriction from `SmartCareDataStore.find_appointment()` so cancelled appointment records can be retrieved.
-- **F8-02:** Changed the practitioner comparison from `!=` to `==` in `SmartCareDataStore.has_practitioner_conflict()` so scheduling conflicts are checked against the same practitioner.
-
-**Focused verification:**
-
-- `py -m pytest tests/test_services.py::test_cancel_appointment -v --tb=short` — PASSED, 1 test in 0.05 seconds.
-- `py -m pytest tests/test_starter.py::test_conflict_rule_and_different_practitioner -v --tb=short` — PASSED, 1 test in 0.06 seconds.
-
-**Full regression command:**
+**Verification command:**
 
 `py -m pytest -v --tb=short`
 
-**Full regression result:** 55 passed, 0 failed.
+**Full-suite result after repairs:** 55 passed, 0 failed, in 0.12 seconds.
 
-**Conclusion:** Both targeted repairs passed their focused regression tests, and the full existing test suite passed after the repairs. No failing tests were reported in the final full-suite run. This establishes the passing baseline before the separate refactoring step.
+**Environment:** Windows, Python 3.14.5, pytest 8.3.5.
 
-**Repair commit SHA:** Pending creation.
+**Evidence:** VS Code terminal outputs recorded the focused failures before repair, focused passing tests after repair, and full-suite passing result before refactoring. The Git log confirmed repair commit `2b641de`, and `git status --short` returned no changes immediately after the commit.
 
-**Evidence:** Terminal outputs from the focused tests and full pytest run.
+**Conclusion:** Both defects were repaired using minimal changes. Their focused regression tests passed, and the complete existing test suite passed with no reported failures. This provides the verified passing baseline for the separate behaviour-preserving refactoring activity in Section H.
 
 ## H. Refactoring decision and before/after verification
 
