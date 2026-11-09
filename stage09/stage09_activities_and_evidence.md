@@ -10,14 +10,14 @@ Stage 8 integrated SHA, command, working directory and actual result: 5a5f35c21d
 
 ### A1 Session state classification
 
-| Information            | Required session/domain or transient state? | Requirement or reason |
-|------------------------|--|-|
-| Patient identit y      |  | |
-| Appointment history    |  | |
-| Temporary menu choice  |  | |
-| Practitioner specialty |  | |
-| Debug print output     |  | |
-| Appointment status     |  |  |
+| Information           | Required session/domain or transient state? | Requirement or reason                                                                           |
+|-----------------------|--|-------------------------------------------------------------------------------------------------|
+| Patient identity      | Session/domain | Needed to identify registered patients and associate them with appointments during the session. |
+| Appointment history   | Session/domain | Needed to retrieve and list appointments, including cancelled and completed appointments.       |
+| Temporary menu choice | Transient state | Only needed while processing the current menu interaction.                                                                                                |
+| Practitioner specialty |Session/domain  |Part of the practitioner's domain information and needed to maintain their registered details.                                                                                             |
+| Debug print output    |Transient state  |Temporary diagnostic output; it does not need to be stored as application data.                                                                                               |
+| Appointment status    | Session/domain | Needed to track whether an appointment is scheduled, cancelled or completed.                                                                                                |
 
 What is intentionally lost on exit?: In-memory patient, practitioner, and appointment records are discarded when the application exits. Stage 9 does not implement the persistent change
 
@@ -236,7 +236,7 @@ Issues and bounded branches:
 
 PR/diff and another-member human reviewer:
 Review responses and Copilot comparison: [<!-- links -->](https://github.com/Kyedeki/st1-assignment-3/pull/13) |Reviewer: Cassandra Navarro
-Integrated common Stage 9 SHA: <!-- complete -->
+Integrated common Stage 9 SHA: e3a0ada3e9d812ef4d0803d174a2abb60a005254 
 Full regression command, working directory, actual count/result and evidence: <!-- complete -->
 README run instructions and scope/limitations: project/README.md
 - Required contents:
@@ -244,7 +244,7 @@ README run instructions and scope/limitations: project/README.md
   - Run the interactive console using python main.py --interactive.
   - Run the test suite using python -m pytest -q.
   - State that records are stored in memory only and are lost when the application exits.
-  - Evidence/link: [Insert GitHub README link after confirming the changes are committed.]
+  - Evidence/link: https://github.com/Kyedeki/st1-assignment-3/blob/main/project/README.md 
 Unresolved issues and support/action: No Critical or Important implementation issues were identified. Minor test improvements remain, and the team will address them before finalising Stage 9.
 UG common candidate / PG future branch plan: Proceed to Stage 12 using the approved common Stage 9 version.
 
@@ -255,6 +255,6 @@ UG common candidate / PG future branch plan: Proceed to Stage 12 using the appro
 - [x] Human design, Copilot critique, review and integration recorded honestly.
 - [x] Reflections and ten formative responses completed.
 - [x] README updated; earlier code/tests/records preserved.
-- [ ] Common SHA protected for UG Stage 12; PG Stage 10/11 work deferred until approved.
+- [x] Common SHA protected for UG Stage 12; PG Stage 10/11 work deferred until approved.
 
 No persistence, rescheduling or assurance implementation is part of Stage 9. UG: 6→7→8→9→12. PG: 6→7→8→9→10→11→12. Mixed groups keep one repository and protect the common candidate.
