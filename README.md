@@ -5,12 +5,12 @@ Baseline: Stage 6 foundation, 2026 revision 2. This starter deliberately leaves 
 
 ## Group index
 
-- Group and tutorial: [complete]
-- Member names, GitHub usernames and UG/PG cohorts: [complete]
-- Shared repository URL: [complete]
-- Latest completed stage: [complete]
-- Verified code SHA: [complete]
-- Test command, working directory and observed result: [complete]
+- Group and tutorial:  Group 2 Monday 2:30-4:30 
+- Member names, GitHub usernames and UG/PG cohorts:Cassandra Navarro (Kyedeki) | Reema Majed M (reema-aboset)
+- Shared repository URL:(https://github.com/Kyedeki/st1-assignment-3)
+- Latest completed stage: Stage 12
+- Verified code SHA: e3a0ada
+- Test command, working directory and observed result: python -m pytest -q, working directory: project/, result: 81 passed, 0 failed 
 - Final submitted SHA, if different from tested code SHA: [complete; explain evidence-only changes]
 
 Do not put student IDs, private peer ratings, credentials or personal contact details here.
