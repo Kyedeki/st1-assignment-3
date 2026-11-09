@@ -1,20 +1,96 @@
-# SmartCare Stage 6 starter
+# SmartCare Appointment System
 
-Requirements baseline: SmartCare A3 2026 revision 2. Python 3.13 and pytest 8.3.5 verified. Runtime uses only the standard library.
+## Project Overview
 
-From this directory, using a Python environment with the development dependency installed:
+SmartCare is a Python-based appointment management system developed for the SmartCare assessment. It supports patient and practitioner registration, appointment booking, appointment lookup, cancellation, and practitioner appointment listing.
 
-```sh
-python main.py
-python -m pytest
+The system uses synthetic records and stores data in memory during each application session. Data is lost when the application exits. No database or persistent storage is implemented.
+
+## Requirements
+
+- Python 3.13
+- pytest 8.3.5
+- Runtime uses only the Python standard library.
+
+Install the development dependencies if required:
+
+```bash
+python -m pip install -r requirements-dev.txt
 ```
 
-If needed in your approved environment: `python -m pip install -r requirements-dev.txt`.
+## Running the Application
 
-The demo registers synthetic records and books/finds an appointment. All supplied tests pass. Data exists only in this session and is lost on exit; FR-10 restart persistence is retired. Use synthetic information only.
+From the `project/` directory, run the demonstration:
 
-`domain.py` contains the entities, status and guarded cancellation. `data_store.py` holds three dictionaries through add/find/list methods. The three services share that object. Supplied registration, booking, appointment lookup and conflict checking work. IDs are trimmed, non-blank and case-sensitive. Properties provide read-only identity/appointment state; changes go through domain methods. No special architecture terminology is required.
+```bash
+python main.py
+```
 
-Stage 6 TODOs: service patient/practitioner lookup and cancellation. Stage 9 TODOs: pure query, named sort key, service listing and interactive menu. The starter TODO contracts are in docstrings. All three Stage 6 TODO calls deliberately raise NotImplementedError; future TODOs remain stubs. No PG rescheduling or assurance solution is supplied.
+To launch the interactive menu:
 
-Service booking accepts IDs and a `datetime` (local, minute precision). Console parser accepts exactly `YYYY-MM-DD HH:MM`. Store lookups return None when absent; service lookups raise LookupError. Invalid values, duplicates, conflicts and illegal transitions raise ValueError. Lists are new containers holding the stored objects. No age, duration, patient-conflict or past-date rules apply.
+```bash
+python main.py --interactive
+```
+
+The interactive menu supports:
+
+1. Register patient
+2. Find patient
+3. Register practitioner
+4. Find practitioner
+5. Book appointment
+6. Cancel appointment
+7. Find appointment
+8. List practitioner appointments
+0. Exit
+
+## Running Tests
+
+Run the complete test suite:
+
+```bash
+python -m pytest -q
+```
+
+The Stage 9 regression test result was **81 passed, 0 failed**.
+
+## System Structure
+
+- `domain.py` – Contains the Patient, Practitioner and Appointment entities, appointment status and guarded cancellation.
+- `data_store.py` – Manages in-memory patient, practitioner and appointment collections.
+- `services.py` – Coordinates registration, lookup, booking, cancellation and appointment listing operations.
+- `queries.py` – Provides pure appointment sorting and filtering functions.
+- `console.py` – Handles date/time parsing, appointment formatting, the demonstration and interactive menu.
+- `main.py` – Selects between demonstration and interactive application modes.
+- `tests/` – Contains automated tests for domain behaviour, services, queries and workflows.
+
+## Stage 9 Features
+
+Stage 9 introduces appointment query functionality and interactive console integration.
+
+The query functions include:
+
+- `appointment_sort_key()` – Returns a sorting key based on appointment date/time and appointment ID.
+- `select_appointments()` – Filters appointments by practitioner and optional status, returning a new list sorted in ascending order.
+
+The appointment service provides `list_practitioner_appointments()`, which validates the practitioner and optional appointment status before returning the matching appointments.
+
+The interactive menu allows users to register and find records, book and cancel appointments, and list appointments by practitioner and status.
+
+## Input and Validation
+
+The console accepts appointment dates and times in the format:
+
+`YYYY-MM-DD HH:MM`
+
+Invalid input, duplicate records, unknown IDs, booking conflicts and invalid appointment status values are handled through error messages. The menu allows users to continue after expected input errors.
+
+IDs are trimmed, non-blank and case-sensitive. Store lookups return `None` when a record is absent, while service lookups raise `LookupError`.
+
+## Limitations
+
+- Data is stored in memory and is lost when the application exits.
+- No database, file-based persistence or external storage is implemented.
+- Only synthetic information should be used.
+- No age, appointment duration, patient-conflict or past-date validation rules apply.
+- The system does not implement PG rescheduling or an assurance solution.
