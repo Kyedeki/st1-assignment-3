@@ -51,7 +51,17 @@ Although all tests pass in the scenario, incomplete README instructions, an unre
 
 The README must explain how to install, run and test the application. Dependencies must be checked for their purpose, origin and licensing. Known limitations must be documented so users understand the system's intended scope.
 
-After these actions, another person should reproduce the application from a fresh copy. Only then should the team reconsider release approval.
+**Fresh-copy verification:** Completed by Reema Aboset on 9 November 2026.
+
+**Method:** Cloned the repository into a separate SmartCare-Release-Check folder.
+
+**Results:**
+- `py main.py` ran successfully.
+- The synthetic appointment was displayed correctly.
+- The session-only limitation was displayed.
+- `py -m pytest -q`: 81 passed, 0 failed, 0.10s.
+
+**Independent teammate verification:** Got Cassandra's review.
 
 ### Tutorial Activity 2 — Evidence matrix
 
@@ -91,7 +101,7 @@ A major limitation is that SmartCare stores information only during the current 
 | Stage 12 complete common suite | Windows PowerShell, Python 3.14.5 | `project/`; `py -m pytest -q` | `5d4c6d725fcbb1bca16773733416951a90f93698` | 81 passed, 0 failed, 0.08s | VS Code terminal verification, 9 November 2026 |
 | PG suite                         | N/A                                        | N/A                                                                 | N/A                      | N/A                                        | UG-only                   |
 | Focused checks after corrections | Pending if changes occur                   | `python -m pytest -q tests/test_queries.py tests/test_workflows.py` | Pending                  | Pending                                    | Test output               |
-| Final integrated recheck         | Pending                                    | `python -m pytest -q`                                               | Pending                  | Pending                                    | Final release evidence    |
+| Full integrated recheck | Windows PowerShell, Python 3.14.5 | `project/`; `py -m pytest -q` | `2e7bf184558d57ce2e4c0ccc36a167e2631e7784` | 81 passed, 0 failed, 0.06s | VS Code terminal, 9 November 2026 |
 
 **Prior assertions preserved / reviewed test diff:** Existing tests remain in the repository. Any corrections must preserve valid earlier assertions and be reviewed before integration.
 
@@ -339,7 +349,9 @@ Yes, Git history and merged pull requests preserve earlier versions. The exact f
 
 ## K Final tested release SHA
 
-**Exact common tested SHA:** `5d4c6d725fcbb1bca16773733416951a90f93698`
+**Exact common tested SHA:** `2e7bf184558d57ce2e4c0ccc36a167e2631e7784`
+
+**Final integrated regression verification:** On 9 November 2026, the updated `main` branch was tested from `project/` using Python 3.14.5 and `py -m pytest -q`. All 81 tests passed in 0.06 seconds, with zero failures.
 
 **Regression verification:** On 9 November 2026, the complete common test suite was executed from `project/` using Python 3.14.5 and `py -m pytest -q`. All 81 tests passed in 0.08 seconds, with zero failures.
 
