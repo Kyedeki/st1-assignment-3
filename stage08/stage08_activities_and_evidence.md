@@ -4,9 +4,11 @@ UG and PG | One evolving group project | Complete this blank record using the St
 
 All Assignment 3 stage materials are provided from the beginning. Complete this stage only after the previous applicable stage has been integrated, verified and recorded. Use this supplied record in stage08/ in your EXISTING repository. Preserve project/, all earlier tests, records and responses. Do not download another starter or copy staff solutions. The Stage 8 preparation utility is supplied or run by teaching staff when Stage 8 begins. Follow your tutor’s controlled workflow and the handout. If temporarily supplied, keep it outside the repository in a sibling Stage_8_Assets/ folder; exclude it from Git and the final submission.
 
-Group/tutorial: [complete]
-Members and UG/PG cohorts: [complete]
-Record owner / contribution links for each member: [complete]
+Group/tutorial: Group 2 Monday 2:30-4:30
+Members and UG/PG cohorts: Cassandra Navarro | Reema Majed M 
+Record owner / contribution links for each member: 
+Cassandra Navarro: Section B Revision and Stage 8 Feedback | https://github.com/Kyedeki/st1-assignment-3/pull/12
+Reema Majed M: Completion of Stage 8 | https://github.com/Kyedeki/st1-assignment-3/pull/11
 
 Use concise results and accessible artefact links rather than copying entire logs. Keep human-first entries before consulting GitHub Copilot. Link shared evidence once; do not repeat it across sections. No entries below are specimen answers or claimed results.
 
@@ -152,13 +154,13 @@ Changing code without investigating the failure can lead to incorrect repairs, h
 
 **Baseline test command / working directory / observed result / evidence:** The Stage 7 record reports 57 passed, 0 failed, with no unresolved defects identified. Evidence: `stage07/stage07_activities_and_evidence.md`, lines 441–443. The Stage 8 handout specifies running the baseline suite from `project/` using `python -m pytest -q`. The exact command used for the recorded Stage 7 test run has not been independently confirmed.
 
-**Clean preparation SHA if a record-only commit followed Stage 7:** Git history shows commit `d30c618` (`update`) between the Stage 7 integration commit `c8dcc65` and the Stage 8 faulty-state commit `3810208`. Its purpose as a clean preparation checkpoint remains unverified.
+**Clean preparation SHA if a record-only commit followed Stage 7:** record.json confirms the preparation SHA was 'd30c618', this means that the parent of the faulty commit 3810208
 
 **Branch and preparer / how teammates obtained this branch:** Stage 8 debugging was conducted on `debug/stage08`. Commit `3810208`, titled `prepare debug stage 08`, was authored by Cassandra Navarro on 3 November 2026 at 13:42 +1100. The commit changed `project/smartcare/data_store.py`, with 11 insertions and 18 deletions. This confirms who committed the prepared faulty state, but not who executed the preparation utility. The branch was later pushed to GitHub and used for the group's debugging and review work.
 
-**Downloaded tool version, source SHA256 and `--check` outcome:** The official Stage 8 handout specifies `prepare_debugging.py`, version 1.1, supplied or run by teaching staff. The original script's SHA256 hash and actual `--check` output have not been recovered. The handout specifies the command `python ../Stage_8_Assets/prepare_debugging.py project --check`, executed from the repository root.
+**Downloaded tool version, source SHA256 and `--check` outcome:** Tool version 1.1 is confirmed in record.json. The original utility hash and --check output because the tutor's asset folder was deleted
 
-**`--apply` and `--verify` output summaries / artefact references:** The handout specifies `python ../Stage_8_Assets/prepare_debugging.py project --apply` followed by `python ../Stage_8_Assets/prepare_debugging.py project --verify`. The original execution outputs have not been recovered. The prepared-state commit and subsequent failing tests establish that the faulty code was present, but do not independently prove the utility's successful execution.
+**`--apply` and `--verify` output summaries / artefact references:** The handout specifies `python ../Stage_8_Assets/prepare_debugging.py project --apply` followed by `python ../Stage_8_Assets/prepare_debugging.py project --verify`. The original execution outputs have not been recovered. The prepared-state commit and subsequent failing tests establish that the faulty code was present, but do not independently prove the utility's successful execution. The metadata records status: prepared, but the original execution outputs could not be recovered
 
 **Bounded diff inspected and recovery location (not committed):** Git inspection of commit `3810208` shows that only `project/smartcare/data_store.py` changed, with 11 insertions and 18 deletions. The official handout specifies `project/.stage8_faults/` for local backup and recovery metadata, excluded from Git. If the utility was temporarily supplied, its location should be a sibling `Stage_8_Assets/` folder outside the repository. The original recovery folder's existence and location on the preparer's computer have not been independently confirmed.
 
