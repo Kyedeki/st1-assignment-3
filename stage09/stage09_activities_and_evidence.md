@@ -156,22 +156,65 @@ Responsibility check: explain how domain invariants, shared-store collections, s
 
 ## F. Required reflections
 
-1. Which integration concern was architectural rather than a filtering/sorting detail? <!-- response -->
-2. Which Copilot suggestion did you reject as over-engineering, and why? <!-- response -->
-3. How did you prove cancelled appointments remain retrievable and listable in the same session? <!-- response -->
+### 1. Which integration concern was architectural rather than a filtering/sorting detail?
+
+The main architectural concern was keeping responsibilities separate while allowing the components to work together. Domain objects should enforce business rules, the datastore should retain session records, services should coordinate operations, pure query functions should filter and sort appointments, and the console should handle user interaction.
+
+Using one shared datastore throughout the menu session is particularly important. Creating a new datastore for each command would lose previously registered participants and appointments, even if the filtering and sorting functions were correct.
+
+### 2. Which Copilot suggestion did you reject as over-engineering, and why?
+
+**Pending actual Copilot review.** This reflection will be completed after examining the suggestions Copilot actually makes about Cassandra's Stage 9 implementation. We should not invent a rejected suggestion or claim a decision that has not occurred.
+
+### 3. How did you prove cancelled appointments remain retrievable and listable in the same session?
+
+The planned verification is to create an appointment, cancel it, and then retrieve it through the existing service. The returned appointment should be the same stored object with status `CANCELLED`.
+
+The practitioner listing with no status filter should include that appointment, while a `SCHEDULED`-only listing should exclude it. These checks will establish that cancellation retains history rather than deleting the appointment.
+
+**Actual test results:** Pending Cassandra's Stage 9 query and workflow verification.
 
 ## G. Ten formative answers
 
-1. What makes select_appointments pure, and what side effect breaks purity? <!-- response -->
-2. Which explicit inputs are needed, and why avoid a global store? <!-- response -->
-3. How can a new list reuse Appointment objects safely? <!-- response -->
-4. Why use a named key, and what breaks equal-time ties? <!-- response -->
-5. How do default and explicit status filters differ? <!-- response -->
-6. How do empty, unknown practitioner and invalid filter cases differ? <!-- response -->
-7. Which console errors recover, and how is unchanged state checked? <!-- response -->
-8. What is data integrity for registered participants, conflicts and history? <!-- response -->
-9. What is Copilot's review role, and who verifies findings? <!-- response -->
-10. How do pure functions and OOP responsibilities work together? <!-- response -->
+### 1. What makes `select_appointments` pure, and what side effect breaks purity?
+
+**Response:** The function is pure when it receives all necessary information through its arguments, returns a predictable result for the same unchanged inputs, and does not modify the source list or Appointment objects. Sorting the original list in place, printing messages, reading user input or accessing a hidden global datastore would break purity.
+
+### 2. Which explicit inputs are needed, and why avoid a global store?
+
+**Response:** `select_appointments()` needs a list of Appointment objects, a practitioner ID and an optional `AppointmentStatus` filter. Using an explicit collection makes the function easier to test and reuse. A global store would create a hidden dependency and could produce different results depending on unrelated application state.
+
+### 3. How can a new list reuse Appointment objects safely?
+
+**Response:** The query can create a new list containing references to the existing Appointment objects without copying or changing them. This is safe because the query only reads their fields. The returned list has a different identity from the source list, while the contained appointment objects retain their original identities.
+
+### 4. Why use a named key, and what breaks equal-time ties?
+
+**Response:** The named `appointment_sort_key()` function makes the sorting rule clear, reusable and independently testable. It returns the appointment's date/time and ID. Appointments are ordered by date/time first, and appointment ID breaks ties when two appointments share the same time.
+
+### 5. How do default and explicit status filters differ?
+
+**Response:** When the status parameter is `None`, appointments of every status are included, including `SCHEDULED`, `CANCELLED` and `COMPLETED`. When a specific `AppointmentStatus` enum is supplied, only appointments with that status are returned. A valid filter that matches no appointments returns an empty list.
+
+### 6. How do empty, unknown practitioner and invalid filter cases differ?
+
+**Response:** A registered practitioner with no appointments, or no appointments matching a valid filter, receives a new empty list. A valid but unregistered practitioner ID raises `LookupError`. A blank or invalid ID raises `ValueError`. A non-enum status supplied directly to the service also raises `ValueError` rather than returning an empty result.
+
+### 7. Which console errors recover, and how is unchanged state checked?
+
+**Response:** The console should recover from invalid menu choices, blank or duplicate IDs, unknown participants, invalid date/time input, invalid status filters, scheduling conflicts and repeated cancellation. It should display a useful message and return to the menu. To check unchanged state, compare relevant records before and after a rejected action and confirm that a later valid action succeeds.
+
+### 8. What is data integrity for registered participants, conflicts and history?
+
+**Response:** Data integrity means appointments reference actual registered Patient and Practitioner objects, IDs remain valid and unique within their entity type, and conflicting scheduled bookings for the same practitioner are rejected. Cancellation changes an existing appointment's status without deleting its history, and rejected operations must not leave unintended changes in the datastore.
+
+### 9. What is Copilot's review role, and who verifies findings?
+
+**Response:** GitHub Copilot acts as a reviewer that can suggest potential problems involving query purity, validation, sorting, object identity and integration. Its suggestions are hypotheses rather than proof. The student team must inspect the code, compare findings with requirements, run meaningful tests and make the final decisions. Another human member also reviews the changes through GitHub.
+
+### 10. How do pure functions and OOP responsibilities work together?
+
+**Response:** Object-oriented components manage application state and business responsibilities, while pure functions process explicit collections without modifying them. Domain objects enforce invariants, the datastore retains in-memory records, services coordinate operations, queries select and sort appointments, and the console handles user interaction. This separation keeps business rules out of the interface and makes the system easier to test and maintain.
 
 ## H. Review, completion and common handover
 
