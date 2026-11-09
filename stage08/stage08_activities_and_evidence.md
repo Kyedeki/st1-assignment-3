@@ -7,7 +7,7 @@ All Assignment 3 stage materials are provided from the beginning. Complete this 
 Group/tutorial: Group 2 Monday 2:30-4:30
 Members and UG/PG cohorts: Cassandra Navarro | Reema Majed M 
 Record owner / contribution links for each member: 
-Cassandra Navarro: Section B Revision and Stage 8 Feedback 
+Cassandra Navarro: Section B Revision and Stage 8 Feedback | https://github.com/Kyedeki/st1-assignment-3/pull/12
 Reema Majed M: Completion of Stage 8 | https://github.com/Kyedeki/st1-assignment-3/pull/11
 
 Use concise results and accessible artefact links rather than copying entire logs. Keep human-first entries before consulting GitHub Copilot. Link shared evidence once; do not repeat it across sections. No entries below are specimen answers or claimed results.
